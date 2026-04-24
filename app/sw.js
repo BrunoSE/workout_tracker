@@ -1,4 +1,4 @@
-const VERSION = 'wt-v4';
+const VERSION = 'wt-v5';
 const APP_SHELL = [
   './',
   './index.html',
@@ -50,12 +50,18 @@ self.addEventListener('fetch', event => {
   }
 
   event.respondWith(
-    caches.match(req).then(cached => cached || fetch(req).then(res => {
-      if (res.ok) {
-        const copy = res.clone();
-        caches.open(VERSION).then(c => c.put(req, copy));
-      }
-      return res;
-    }).catch(() => caches.match('./index.html')))
+    caches.match(req).then(cached => {
+      if (cached) return cached;
+      return fetch(req).then(res => {
+        if (res.ok) {
+          const copy = res.clone();
+          caches.open(VERSION).then(c => c.put(req, copy));
+        }
+        return res;
+      }).catch(() => {
+        if (req.mode === 'navigate') return caches.match('./index.html');
+        return new Response('', { status: 504, statusText: 'offline' });
+      });
+    })
   );
 });
