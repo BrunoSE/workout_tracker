@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "defaultSets": 3,
+  "preludeNote": "Todos son 3 series de (N) repeticiones",
+  "routines": [
+    {
+      "id": "full_1",
+      "name": "Full Body 1",
+      "category": "full_body",
+      "source": "workouts/full_body/full_1.md",
+      "exercises": [
+        { "name": "Squat barbell",                  "reps": 6,  "weight": 65,   "unit": "lb", "perSet": [45, 55, 65], "notes": "" },
+        { "name": "Bench press",                    "reps": 8,  "weight": 40,   "unit": "lb", "perSet": [25, 35, 40], "notes": "" },
+        { "name": "Lat pulldown",                   "reps": 10, "weight": 110,  "unit": "lb", "notes": "" },
+        { "name": "Romanian deadlift",              "reps": 10, "weight": 45,   "unit": "lb", "perSet": [35, 45, 45], "notes": "" },
+        { "name": "Dumbbell press",                 "reps": 8,  "weight": 35,   "unit": "lb", "notes": "reemplazo de assisted dip" },
+        { "name": "Calf raises",                    "reps": 10, "weight": 5,    "unit": "lb", "notes": "" },
+        { "name": "Dumbbell supinated curl",        "reps": 10, "weight": 20,   "unit": "lb", "notes": "siempre sentado" }
+      ]
+    },
+    {
+      "id": "full_2",
+      "name": "Full Body 2",
+      "category": "full_body",
+      "source": "workouts/full_body/full_2.md",
+      "exercises": [
+        { "name": "Deadlift",                       "reps": 6,  "weight": 90,   "unit": "lb", "perSet": [45, 70, 90], "warmup": [true, true, false], "notes": "" },
+        { "name": "Overhead press",                 "reps": 8,  "weight": 10,   "unit": "lb", "notes": "o 35 dumbbell siempre parado" },
+        { "name": "T bar row",                      "reps": 12, "weight": 35,   "unit": "lb", "notes": "usar 2x dumbbells" },
+        { "name": "Leg extensions",                 "reps": 12, "weight": 17.5, "unit": "kg", "notes": "" },
+        { "name": "Cable flye",                     "reps": 12, "weight": 20,   "unit": "lb", "notes": "último angulo fue 9; ir alternando 5, 7, 9" },
+        { "name": "Crunch",                         "reps": 12, "weight": 83,   "unit": "lb", "notes": "sin mover muslos ni cadera" },
+        { "name": "Dumbbell skull crusher",         "reps": 12, "weight": 15,   "unit": "lb", "notes": "" }
+      ]
+    },
+    {
+      "id": "full_3",
+      "name": "Full Body 3",
+      "category": "full_body",
+      "source": "workouts/full_body/full_3.md",
+      "exercises": [
+        { "name": "Dumbbell walking lounge",        "reps": 10, "weight": 25,   "unit": "lb", "notes": "hacer bien sin apoyar pie trasero" },
+        { "name": "Dumbbell incline press",         "reps": 8,  "weight": 50,   "unit": "lb", "perSet": [45, 50, 45], "notes": "" },
+        { "name": "Reverse grip lat pulldown",      "reps": 10, "weight": 121,  "unit": "lb", "notes": "" },
+        { "name": "Hip thrusts",                    "reps": 12, "weight": 35,   "unit": "lb", "notes": "" },
+        { "name": "Seated face pull",               "reps": 12, "weight": 33,   "unit": "lb", "notes": "" },
+        { "name": "Dumbbell lateral raises",        "reps": 10, "weight": 15,   "unit": "lb", "notes": "" },
+        { "name": "Lying leg curl",                 "reps": 10, "weight": 7.5,  "unit": "kg", "notes": "" }
+      ]
+    },
+    {
+      "id": "arm_1",
+      "name": "Arm 1",
+      "category": "split_arm_leg",
+      "source": "workouts/split_arm_leg/arm_1.md",
+      "exercises": [
+        { "name": "Bench press",                    "reps": 5,  "weight": 45,   "unit": "lb", "perSet": [25, 45, 45], "warmup": [true, false, false], "notes": "" },
+        { "name": "Lat pulldown",                   "reps": 10, "weight": 110,  "unit": "lb", "notes": "" },
+        { "name": "Overhead press",                 "reps": 10, "weight": 10,   "unit": "lb", "notes": "o 35 dumbbell siempre parado" },
+        { "name": "Chest supported row",            "reps": 12, "weight": 25,   "unit": "lb", "notes": "" },
+        { "name": "Cable flye",                     "reps": 12, "weight": 11,   "unit": "lb", "notes": "each" },
+        { "name": "Dumbbell supinated curl",        "reps": 10, "weight": 20,   "unit": "lb", "notes": "each" },
+        { "name": "Single arm rope tricep extension","reps": 12,"weight": 11,   "unit": "lb", "notes": "" }
+      ]
+    },
+    {
+      "id": "arm_2",
+      "name": "Arm 2",
+      "category": "split_arm_leg",
+      "source": "workouts/split_arm_leg/arm_2.md",
+      "exercises": [
+        { "name": "Inclined dumbbell press",        "reps": 8,  "weight": 50,   "unit": "lb", "notes": "" },
+        { "name": "Reverse lat pulldown",           "reps": 8,  "weight": 110,  "unit": "lb", "notes": "" },
+        { "name": "Tricep dumbbell press",          "reps": 10, "weight": 25,   "unit": "lb", "notes": "" },
+        { "name": "Barbell bent over row",          "reps": 12, "weight": 35,   "unit": "lb", "perSet": [25, 35, 35], "notes": "ESTRICTO" },
+        { "name": "Dumbbell lat raise",             "reps": 15, "weight": 10,   "unit": "lb", "notes": "" },
+        { "name": "Seated face pull",               "reps": 15, "weight": 33,   "unit": "lb", "notes": "" },
+        { "name": "Hammer curl",                    "reps": 8,  "weight": 15,   "unit": "lb", "notes": "" }
+      ]
+    },
+    {
+      "id": "leg_1",
+      "name": "Leg 1",
+      "category": "split_arm_leg",
+      "source": "workouts/split_arm_leg/leg_1.md",
+      "exercises": [
+        { "name": "Squat barbell",                  "reps": 6,  "weight": 65,   "unit": "lb", "perSet": [45, 55, 65], "notes": "" },
+        { "name": "Romanian deadlift",              "reps": 10, "weight": 45,   "unit": "lb", "perSet": [35, 45, 45], "notes": "" },
+        { "name": "Hip thrusts",                    "reps": 12, "weight": 25,   "unit": "lb", "notes": "" },
+        { "name": "Leg extensions",                 "reps": 12, "weight": 17.5, "unit": "kg", "notes": "" },
+        { "name": "Lying leg curl",                 "reps": 12, "weight": 7.5,  "unit": "kg", "notes": "" },
+        { "name": "Hip machine",                    "reps": 6,  "weight": 110,  "unit": "lb", "notes": "" },
+        { "name": "Crunch",                         "reps": 12, "weight": 83,   "unit": "lb", "notes": "" }
+      ]
+    },
+    {
+      "id": "leg_2",
+      "name": "Leg 2",
+      "category": "split_arm_leg",
+      "source": "workouts/split_arm_leg/leg_2.md",
+      "exercises": [
+        { "name": "Deadlift",                       "reps": 8,  "weight": 90,   "unit": "lb", "perSet": [45, 70, 90], "warmup": [true, true, false], "notes": "" },
+        { "name": "Dumbbell walking lounges",       "reps": 20, "weight": 25,   "unit": "lb", "notes": "" },
+        { "name": "Single leg ext",                 "reps": 15, "weight": 7.5,  "unit": "kg", "notes": "" },
+        { "name": "Single leg leg curl",            "reps": 15, "weight": 5,    "unit": "kg", "notes": "" },
+        { "name": "Seated hip",                     "reps": 15, "weight": 90,   "unit": "lb", "notes": "" },
+        { "name": "Calf raise",                     "reps": 12, "weight": null, "unit": null, "bodyweight": true, "notes": "" },
+        { "name": "Plank",                          "duration": "30s",                        "bodyweight": true, "notes": "" }
+      ]
+    }
+  ]
+}
