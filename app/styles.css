@@ -14,6 +14,29 @@
   --gap: 12px;
 }
 
+body[data-theme="arm"] {
+  --bg: #140a0c;
+  --surface: #1e1013;
+  --surface-2: #26151a;
+  --border: #3a1f26;
+}
+body[data-theme="leg"] {
+  --bg: #0a1410;
+  --surface: #101e16;
+  --surface-2: #15261c;
+  --border: #1f3a2b;
+}
+body[data-theme="full"] {
+  --bg: #0a1018;
+  --surface: #101825;
+  --surface-2: #151f30;
+  --border: #1f2d45;
+}
+
+body {
+  transition: background-color 180ms ease;
+}
+
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
@@ -139,10 +162,29 @@ h2.section-title:first-child { margin-top: 4px; }
 
 .set-row {
   display: grid;
-  grid-template-columns: 28px 1fr 1fr 32px;
-  gap: 8px;
+  grid-template-columns: 24px 1fr 1fr 1fr 28px;
+  gap: 6px;
   align-items: center;
   margin: 6px 0;
+}
+.set-row.set-header {
+  margin-bottom: 2px;
+}
+.set-row.set-header .col-head {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  text-align: center;
+}
+.rest-placeholder {
+  color: var(--text-dim);
+  text-align: center;
+  font-size: 14px;
+}
+.input-suffix.rest::after {
+  content: "min";
+  font-size: 10px;
 }
 .set-label {
   color: var(--text-dim);
@@ -155,11 +197,17 @@ h2.section-title:first-child { margin-top: 4px; }
   border: 1px solid var(--border);
   color: var(--text);
   border-radius: 8px;
-  padding: 10px 10px;
+  padding: 10px 6px;
   font-size: 16px;
   width: 100%;
   text-align: center;
   font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+}
+.set-row input[type="number"]::-webkit-outer-spin-button,
+.set-row input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .set-row input[type="number"]:focus {
   outline: none;
@@ -253,6 +301,36 @@ h2.section-title:first-child { margin-top: 4px; }
   color: var(--text-dim);
   margin-top: 6px;
   line-height: 1.4;
+}
+
+.last-workout-banner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin-bottom: var(--gap);
+  font-size: 15px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.last-workout-banner .label {
+  color: var(--text-dim);
+  font-size: 13px;
+}
+.last-workout-banner .value {
+  font-weight: 600;
+  color: var(--accent);
+}
+.last-workout-banner .value.na {
+  color: var(--text-dim);
+  font-weight: 500;
+}
+.last-workout-banner .date-aside {
+  color: var(--text-dim);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
 }
 
 .status-banner {

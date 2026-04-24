@@ -63,16 +63,31 @@ function getRoutine(id) {
   return state.routines?.find(r => r.id === id);
 }
 
+function themeFromRoutineId(id) {
+  if (!id) return 'default';
+  if (id.startsWith('arm_'))  return 'arm';
+  if (id.startsWith('leg_'))  return 'leg';
+  if (id.startsWith('full_')) return 'full';
+  return 'default';
+}
+
+function applyTheme(theme) {
+  document.body.dataset.theme = theme;
+}
+
 async function route() {
   const hash = location.hash || '#/';
   const parts = hash.replace(/^#\//, '').split('/');
   backBtn.classList.toggle('hidden', parts[0] === '' || parts[0] === undefined);
   if (parts[0] === '' || parts[0] === undefined) {
     backBtn.classList.add('hidden');
+    applyTheme('default');
     await renderHome();
   } else if (parts[0] === 'session' && parts[1]) {
+    applyTheme(themeFromRoutineId(parts[1]));
     await renderSession(parts[1]);
   } else if (parts[0] === 'settings') {
+    applyTheme('default');
     renderSettings();
   } else {
     location.hash = '#/';
@@ -159,13 +174,21 @@ function buildInitialSession(routine, lastSession) {
       if (ex.duration) {
         sets = [{ duration: ex.duration, done: false }];
       } else if (prev && prev.sets && prev.sets.length) {
-        sets = prev.sets.slice(0, setCount).map(s => ({
+        sets = prev.sets.slice(0, setCount).map((s, i) => ({
           weight: s.weight, unit: s.unit, reps: s.reps,
-          warmup: !!s.warmup, done: false,
+          warmup: !!s.warmup,
+          restMinutes: i < setCount - 1 ? (s.restMinutes ?? 1.5) : null,
+          done: false,
         }));
         while (sets.length < setCount) {
           const last = sets[sets.length - 1];
-          sets.push({ weight: last?.weight ?? ex.weight, unit: last?.unit ?? ex.unit, reps: last?.reps ?? ex.reps, warmup: false, done: false });
+          const i = sets.length;
+          sets.push({
+            weight: last?.weight ?? ex.weight, unit: last?.unit ?? ex.unit, reps: last?.reps ?? ex.reps,
+            warmup: false,
+            restMinutes: i < setCount - 1 ? 1.5 : null,
+            done: false,
+          });
         }
       } else {
         const perSet = ex.perSet;
@@ -175,6 +198,7 @@ function buildInitialSession(routine, lastSession) {
           unit: ex.unit,
           reps: ex.reps,
           warmup: !!warmup[i],
+          restMinutes: i < setCount - 1 ? 1.5 : null,
           done: false,
         }));
       }
@@ -229,7 +253,7 @@ async function renderSession(routineId) {
         return `
           <div class="set-row">
             <div class="set-label">1</div>
-            <div style="grid-column: span 2; color: var(--text-dim); font-size: 14px;">${ex.target.duration}</div>
+            <div style="grid-column: span 3; color: var(--text-dim); font-size: 14px;">${ex.target.duration}</div>
             <input type="checkbox" class="set-done" data-ex="${idx}" data-set="${si}" data-field="done" ${s.done ? 'checked' : ''} />
           </div>`;
       }
@@ -238,11 +262,16 @@ async function renderSession(routineId) {
       const weightInput = isBW
         ? `<div style="color: var(--text-dim); font-size: 13px; text-align:center;">bodyweight</div>`
         : `<div class="input-suffix" data-suffix="${s.unit || ''}"><input type="number" inputmode="decimal" step="0.5" value="${s.weight ?? ''}" data-ex="${idx}" data-set="${si}" data-field="weight" /></div>`;
+      const isLastSet = si === ex.sets.length - 1;
+      const restInput = isLastSet
+        ? `<div class="rest-placeholder">—</div>`
+        : `<div class="input-suffix rest" data-suffix="min"><input type="number" inputmode="decimal" step="0.5" min="0" value="${s.restMinutes ?? ''}" data-ex="${idx}" data-set="${si}" data-field="restMinutes" /></div>`;
       return `
         <div class="set-row">
           <div class="${labelClass}">${label}</div>
           ${weightInput}
           <div class="input-suffix" data-suffix="reps"><input type="number" inputmode="numeric" step="1" value="${s.reps ?? ''}" data-ex="${idx}" data-set="${si}" data-field="reps" /></div>
+          ${restInput}
           <input type="checkbox" class="set-done" data-ex="${idx}" data-set="${si}" data-field="done" ${s.done ? 'checked' : ''} />
         </div>`;
     }).join('');
@@ -259,12 +288,31 @@ async function renderSession(routineId) {
         </div>
         ${ex.routineNote ? `<div class="exercise-notes">${ex.routineNote}</div>` : ''}
         ${ex.previousSets ? `<div class="last-summary">${fmtLast({ sets: ex.previousSets })}</div>` : ''}
+        ${isTimed ? '' : `
+        <div class="set-row set-header">
+          <div class="set-label">#</div>
+          <div class="col-head">${isBW ? '' : 'weight'}</div>
+          <div class="col-head">reps</div>
+          <div class="col-head">rest</div>
+          <div class="col-head">✓</div>
+        </div>`}
         ${setsHtml}
         <textarea class="notes-input" placeholder="Notes (optional)" data-ex="${idx}" data-field="notes">${ex.notes || ''}</textarea>
       </div>`;
   }
 
+  const lastDateIso = lastSession?.completedAt || (lastSession?.date ? `${lastSession.date}T00:00:00` : null);
+  let lastBanner;
+  if (!lastDateIso) {
+    lastBanner = `<div class="last-workout-banner"><span class="label">Last ${routine.name}:</span> <span class="value na">N/A</span></div>`;
+  } else {
+    const days = Math.max(0, Math.floor((Date.now() - new Date(lastDateIso).getTime()) / 86400000));
+    const phrase = days === 0 ? 'today' : days === 1 ? '1 day ago' : `${days} days ago`;
+    lastBanner = `<div class="last-workout-banner"><span class="label">Last ${routine.name}:</span> <span class="value">${phrase}</span> <span class="date-aside">(${lastSession.date})</span></div>`;
+  }
+
   container.innerHTML = `
+    ${lastBanner}
     ${draft ? '<div class="status-banner ok">Draft restored — keep going.</div>' : ''}
     ${session.exercises.map((ex, i) => renderExercise(ex, i)).join('')}
     <div class="sticky-footer">
@@ -288,6 +336,7 @@ async function renderSession(routineId) {
       if (field === 'done') set.done = t.checked;
       else if (field === 'weight') set.weight = t.value === '' ? null : Number(t.value);
       else if (field === 'reps') set.reps = t.value === '' ? null : Number(t.value);
+      else if (field === 'restMinutes') set.restMinutes = t.value === '' ? null : Number(t.value);
     } else if (t.dataset.field === 'notes') {
       ex.notes = t.value;
     }
@@ -326,6 +375,7 @@ async function saveCurrent(session) {
           if (s.duration) out.duration = s.duration;
           if (s.weight != null) { out.weight = s.weight; out.unit = s.unit; }
           if (s.reps != null) out.reps = s.reps;
+          if (s.restMinutes != null) out.restMinutes = s.restMinutes;
           if (s.warmup) out.warmup = true;
           return out;
         }),

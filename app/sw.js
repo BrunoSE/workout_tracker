@@ -1,4 +1,4 @@
-const VERSION = 'wt-v1';
+const VERSION = 'wt-v4';
 const APP_SHELL = [
   './',
   './index.html',
