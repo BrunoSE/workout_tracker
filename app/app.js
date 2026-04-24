@@ -115,25 +115,32 @@ async function renderHome() {
   }
 
   const render = () => {
-    const groups = { full_body: [], split_arm_leg: [] };
-    for (const r of routines) groups[r.category]?.push(r);
+    const legs = routines.filter(r => r.id.startsWith('leg_')).sort((a, b) => a.id.localeCompare(b.id));
+    const arms = routines.filter(r => r.id.startsWith('arm_')).sort((a, b) => a.id.localeCompare(b.id));
+    const full = routines.filter(r => r.id.startsWith('full_')).sort((a, b) => a.id.localeCompare(b.id));
 
     const cardFor = r => {
       const last = state.lastSessions[r.id];
       const sub = last
         ? `Last: ${humanDate(last.date)} · ${last.exercises.length} exercises`
         : `${r.exercises.length} exercises`;
+      const theme = themeFromRoutineId(r.id);
       return `
-        <button class="card" data-routine="${r.id}">
+        <button class="card" data-theme="${theme}" data-routine="${r.id}">
           <div class="card-title">${r.name}</div>
           <div class="card-sub">${sub}</div>
         </button>`;
     };
 
+    const section = (title, list) => list.length
+      ? `<h2 class="section-title">${title}</h2>${list.map(cardFor).join('')}`
+      : '';
+
     app.innerHTML = `
       ${pendingBanner}
-      ${groups.full_body.length ? '<h2 class="section-title">Full Body</h2>' + groups.full_body.map(cardFor).join('') : ''}
-      ${groups.split_arm_leg.length ? '<h2 class="section-title">Arm / Leg Split</h2>' + groups.split_arm_leg.map(cardFor).join('') : ''}
+      ${section('Legs', legs)}
+      ${section('Arms', arms)}
+      ${section('Full Body', full)}
     `;
     app.querySelectorAll('[data-routine]').forEach(btn => {
       btn.addEventListener('click', () => {

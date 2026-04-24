@@ -109,6 +109,12 @@ h2.section-title:first-child { margin-top: 4px; }
   display: block;
 }
 .card:active { background: var(--surface-2); }
+.card[data-theme="arm"]  { background: #1e1013; border-color: #3a1f26; }
+.card[data-theme="leg"]  { background: #101e16; border-color: #1f3a2b; }
+.card[data-theme="full"] { background: #101825; border-color: #1f2d45; }
+.card[data-theme="arm"]:active  { background: #26151a; }
+.card[data-theme="leg"]:active  { background: #15261c; }
+.card[data-theme="full"]:active { background: #151f30; }
 .card-title {
   font-size: 17px;
   font-weight: 600;
