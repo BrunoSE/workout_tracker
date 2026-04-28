@@ -32,6 +32,12 @@ body[data-theme="full"] {
   --surface-2: #151f30;
   --border: #1f2d45;
 }
+body[data-theme="hyrox"] {
+  --bg: #18110a;
+  --surface: #221710;
+  --surface-2: #2c1d13;
+  --border: #4a2f1a;
+}
 
 body {
   transition: background-color 180ms ease;
@@ -109,12 +115,14 @@ h2.section-title:first-child { margin-top: 4px; }
   display: block;
 }
 .card:active { background: var(--surface-2); }
-.card[data-theme="arm"]  { background: #1e1013; border-color: #3a1f26; }
-.card[data-theme="leg"]  { background: #101e16; border-color: #1f3a2b; }
-.card[data-theme="full"] { background: #101825; border-color: #1f2d45; }
-.card[data-theme="arm"]:active  { background: #26151a; }
-.card[data-theme="leg"]:active  { background: #15261c; }
-.card[data-theme="full"]:active { background: #151f30; }
+.card[data-theme="arm"]   { background: #1e1013; border-color: #3a1f26; }
+.card[data-theme="leg"]   { background: #101e16; border-color: #1f3a2b; }
+.card[data-theme="full"]  { background: #101825; border-color: #1f2d45; }
+.card[data-theme="hyrox"] { background: #221710; border-color: #4a2f1a; }
+.card[data-theme="arm"]:active   { background: #26151a; }
+.card[data-theme="leg"]:active   { background: #15261c; }
+.card[data-theme="full"]:active  { background: #151f30; }
+.card[data-theme="hyrox"]:active { background: #2c1d13; }
 .card-title {
   font-size: 17px;
   font-weight: 600;

@@ -107,6 +107,52 @@
         { "name": "Calf raise",                     "reps": 12, "weight": null, "unit": null, "bodyweight": true, "notes": "" },
         { "name": "Plank",                          "duration": "30s",                        "bodyweight": true, "notes": "" }
       ]
+    },
+    {
+      "id": "legh_1",
+      "name": "Leg 1 (Hyrox)",
+      "category": "hyrox",
+      "source": "workouts/hyrox/legh_1.md",
+      "exercises": [
+        { "name": "Squat barbell",                  "reps": 6,  "weight": 65,   "unit": "lb", "perSet": [45, 55, 65], "notes": "Sled push quad drive" },
+        { "name": "Romanian deadlift",              "reps": 10, "weight": 45,   "unit": "lb", "perSet": [35, 45, 45], "notes": "Sled pull posterior chain" },
+        { "name": "Hip thrusts",                    "reps": 12, "weight": 25,   "unit": "lb", "notes": "Sled push hip extension" },
+        { "name": "Farmer carry",                   "distance": "200m",         "weight": 24,   "unit": "kg", "notes": "Per hand (2 KBs); Station 6; build to unbroken 200m" },
+        { "name": "Lying leg curl",                 "reps": 12, "weight": 7.5,  "unit": "kg", "notes": "Hamstring protection" },
+        { "name": "Nordic hamstring curls",         "reps": 8,  "weight": null, "unit": null, "bodyweight": true, "sets": 2, "notes": "Protects hamstrings & calves from cramping" },
+        { "name": "Crunch",                         "reps": 12, "weight": 83,   "unit": "lb", "notes": "" },
+        { "name": "Dead hang",                      "duration": "30s",          "weight": null, "unit": null, "bodyweight": true, "notes": "Grip work for sled pull rope and farmer carry" }
+      ]
+    },
+    {
+      "id": "legh_2",
+      "name": "Leg 2 (Hyrox)",
+      "category": "hyrox",
+      "source": "workouts/hyrox/legh_2.md",
+      "exercises": [
+        { "name": "Deadlift",                       "reps": 8,  "weight": 90,   "unit": "lb", "perSet": [45, 70, 90], "warmup": [true, true, false], "notes": "Sled pull + posterior chain" },
+        { "name": "DB walking lunges (on shoulders)","distance":"50m",          "weight": 25,   "unit": "lb", "notes": "DBs on shoulders, mimic 20kg sandbag (Station 7); build to 100m unbroken" },
+        { "name": "Wall balls",                     "reps": 30, "weight": 6,    "unit": "kg", "notes": "Ball to 3m; Station 8; build to unbroken 30+" },
+        { "name": "Goblet squat",                   "reps": 15, "weight": null, "unit": "kg", "notes": "Moderate KB; high-rep quad endurance" },
+        { "name": "Plate pinch hold",               "duration": "30s",          "weight": 10,   "unit": "kg", "notes": "2x10kg plates; grip endurance for farmer carry & sled pull rope" },
+        { "name": "Dead hang (max)",                "duration": "max",          "weight": null, "unit": null, "bodyweight": true, "notes": "Hold to failure; track max time" },
+        { "name": "Calf raise",                     "reps": 12, "weight": null, "unit": null, "bodyweight": true, "notes": "Calf maintenance" }
+      ]
+    },
+    {
+      "id": "armh",
+      "name": "Arm + Core (Hyrox)",
+      "category": "hyrox",
+      "source": "workouts/hyrox/armh.md",
+      "exercises": [
+        { "name": "Bench press",                    "reps": 5,  "weight": 45,   "unit": "lb", "perSet": [25, 45, 45], "warmup": [true, false, false], "notes": "General pressing strength" },
+        { "name": "Lat pulldown",                   "reps": 10, "weight": 110,  "unit": "lb", "notes": "SkiErg pull and sled pull; key Hyrox exercise" },
+        { "name": "Overhead press (standing)",      "reps": 10, "weight": 65,   "unit": "lb", "notes": "Barbell; wall ball pressing power; progress weight" },
+        { "name": "Barbell bent over row",          "reps": 12, "weight": 35,   "unit": "lb", "perSet": [25, 35, 35], "notes": "ESTRICTO; sled pull rowing motion" },
+        { "name": "Dumbbell lateral raise",         "reps": 15, "weight": 10,   "unit": "lb", "notes": "Shoulder endurance for wall balls" },
+        { "name": "Hammer curl",                    "reps": 10, "weight": 15,   "unit": "lb", "notes": "Grip and pulling strength" },
+        { "name": "Tricep extension",               "reps": 12, "weight": 11,   "unit": "lb", "notes": "Pressing endurance" }
+      ]
     }
   ]
 }

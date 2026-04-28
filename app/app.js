@@ -65,6 +65,7 @@ function getRoutine(id) {
 
 function themeFromRoutineId(id) {
   if (!id) return 'default';
+  if (id === 'armh' || id.startsWith('legh_')) return 'hyrox';
   if (id.startsWith('arm_'))  return 'arm';
   if (id.startsWith('leg_'))  return 'leg';
   if (id.startsWith('full_')) return 'full';
@@ -115,9 +116,10 @@ async function renderHome() {
   }
 
   const render = () => {
-    const legs = routines.filter(r => r.id.startsWith('leg_')).sort((a, b) => a.id.localeCompare(b.id));
-    const arms = routines.filter(r => r.id.startsWith('arm_')).sort((a, b) => a.id.localeCompare(b.id));
-    const full = routines.filter(r => r.id.startsWith('full_')).sort((a, b) => a.id.localeCompare(b.id));
+    const hyrox = routines.filter(r => r.category === 'hyrox').sort((a, b) => a.id.localeCompare(b.id));
+    const legs  = routines.filter(r => r.id.startsWith('leg_')).sort((a, b) => a.id.localeCompare(b.id));
+    const arms  = routines.filter(r => r.id.startsWith('arm_')).sort((a, b) => a.id.localeCompare(b.id));
+    const full  = routines.filter(r => r.id.startsWith('full_')).sort((a, b) => a.id.localeCompare(b.id));
 
     const cardFor = r => {
       const last = state.lastSessions[r.id];
@@ -138,6 +140,7 @@ async function renderHome() {
 
     app.innerHTML = `
       ${pendingBanner}
+      ${section('Hyrox', hyrox)}
       ${section('Legs', legs)}
       ${section('Arms', arms)}
       ${section('Full Body', full)}
@@ -164,6 +167,12 @@ async function renderHome() {
   }
 }
 
+function exerciseType(ex) {
+  if (ex.distance) return 'distance';
+  if (ex.duration) return 'duration';
+  return 'reps';
+}
+
 function buildInitialSession(routine, lastSession) {
   const lastByName = new Map();
   if (lastSession) {
@@ -176,42 +185,70 @@ function buildInitialSession(routine, lastSession) {
     startedAt: new Date().toISOString(),
     exercises: routine.exercises.map(ex => {
       const prev = lastByName.get(ex.name);
-      const setCount = 3;
+      const type = exerciseType(ex);
+      const setCount = ex.sets ?? 3;
       let sets;
-      if (ex.duration) {
-        sets = [{ duration: ex.duration, done: false }];
-      } else if (prev && prev.sets && prev.sets.length) {
-        sets = prev.sets.slice(0, setCount).map((s, i) => ({
-          weight: s.weight, unit: s.unit, reps: s.reps,
-          warmup: !!s.warmup,
-          restMinutes: i < setCount - 1 ? (s.restMinutes ?? 1.5) : null,
-          done: false,
-        }));
-        while (sets.length < setCount) {
-          const last = sets[sets.length - 1];
-          const i = sets.length;
-          sets.push({
-            weight: last?.weight ?? ex.weight, unit: last?.unit ?? ex.unit, reps: last?.reps ?? ex.reps,
-            warmup: false,
+
+      if (type === 'reps') {
+        if (prev && prev.sets && prev.sets.length) {
+          sets = prev.sets.slice(0, setCount).map((s, i) => ({
+            weight: s.weight, unit: s.unit, reps: s.reps,
+            warmup: !!s.warmup,
+            restMinutes: i < setCount - 1 ? (s.restMinutes ?? 1.5) : null,
+            done: false,
+          }));
+          while (sets.length < setCount) {
+            const last = sets[sets.length - 1];
+            const i = sets.length;
+            sets.push({
+              weight: last?.weight ?? ex.weight, unit: last?.unit ?? ex.unit, reps: last?.reps ?? ex.reps,
+              warmup: false,
+              restMinutes: i < setCount - 1 ? 1.5 : null,
+              done: false,
+            });
+          }
+        } else {
+          const perSet = ex.perSet;
+          const warmup = ex.warmup || [];
+          sets = Array.from({ length: setCount }, (_, i) => ({
+            weight: ex.bodyweight ? null : (perSet ? perSet[i] ?? perSet[perSet.length - 1] : ex.weight),
+            unit: ex.unit,
+            reps: ex.reps,
+            warmup: !!warmup[i],
             restMinutes: i < setCount - 1 ? 1.5 : null,
             done: false,
-          });
+          }));
         }
-      } else {
-        const perSet = ex.perSet;
-        const warmup = ex.warmup || [];
+      } else if (type === 'distance') {
+        const seedWeight = prev?.sets?.[0]?.weight ?? ex.weight;
+        const seedDistance = prev?.sets?.[0]?.distance ?? ex.distance;
         sets = Array.from({ length: setCount }, (_, i) => ({
-          weight: ex.bodyweight ? null : (perSet ? perSet[i] ?? perSet[perSet.length - 1] : ex.weight),
+          distance: prev?.sets?.[i]?.distance ?? seedDistance,
+          weight: ex.bodyweight ? null : (prev?.sets?.[i]?.weight ?? seedWeight),
           unit: ex.unit,
-          reps: ex.reps,
-          warmup: !!warmup[i],
-          restMinutes: i < setCount - 1 ? 1.5 : null,
+          restMinutes: i < setCount - 1 ? (prev?.sets?.[i]?.restMinutes ?? 1.5) : null,
+          done: false,
+        }));
+      } else { // duration
+        const seedDuration = prev?.sets?.[0]?.duration ?? ex.duration;
+        const seedWeight = prev?.sets?.[0]?.weight ?? ex.weight;
+        sets = Array.from({ length: setCount }, (_, i) => ({
+          duration: prev?.sets?.[i]?.duration ?? seedDuration,
+          weight: ex.bodyweight ? null : (prev?.sets?.[i]?.weight ?? seedWeight),
+          unit: ex.unit,
+          restMinutes: i < setCount - 1 ? (prev?.sets?.[i]?.restMinutes ?? 1.5) : null,
           done: false,
         }));
       }
+
       return {
         name: ex.name,
-        target: { reps: ex.reps, weight: ex.weight, unit: ex.unit, duration: ex.duration, bodyweight: !!ex.bodyweight },
+        type,
+        target: {
+          reps: ex.reps, weight: ex.weight, unit: ex.unit,
+          duration: ex.duration, distance: ex.distance,
+          bodyweight: !!ex.bodyweight,
+        },
         notes: '',
         routineNote: ex.notes || '',
         sets,
@@ -244,48 +281,66 @@ async function renderSession(routineId) {
   function fmtLast(prev) {
     if (!prev || !prev.sets) return '';
     const parts = prev.sets.map(s => {
-      if (s.duration) return s.duration;
+      const w = (s.weight != null) ? `${s.weight}${s.unit || ''}` : (s.bodyweight === false ? '?' : 'BW');
+      if (s.distance) return `${s.distance}@${w}`;
+      if (s.duration) return s.weight != null ? `${s.duration}@${w}` : s.duration;
       if (s.weight == null) return `BW×${s.reps}`;
-      return `${s.weight}${s.unit ? s.unit : ''}×${s.reps}`;
+      return `${w}×${s.reps}`;
     });
     return `Last: ${parts.join(', ')}`;
   }
 
   function renderExercise(ex, idx) {
-    const isTimed = !!ex.target.duration;
-    const isBW = ex.target.bodyweight && !isTimed;
+    const type = ex.type || 'reps';
+    const isBW = ex.target.bodyweight;
+    const measureCol = type === 'distance' ? 'distance' : type === 'duration' ? 'time' : 'reps';
 
-    const setsHtml = ex.sets.map((s, si) => {
-      if (isTimed) {
-        return `
-          <div class="set-row">
-            <div class="set-label">1</div>
-            <div style="grid-column: span 3; color: var(--text-dim); font-size: 14px;">${ex.target.duration}</div>
-            <input type="checkbox" class="set-done" data-ex="${idx}" data-set="${si}" data-field="done" ${s.done ? 'checked' : ''} />
-          </div>`;
+    const weightCell = (s, si) => isBW
+      ? `<div style="color: var(--text-dim); font-size: 13px; text-align:center;">BW</div>`
+      : `<div class="input-suffix" data-suffix="${s.unit || ''}"><input type="number" inputmode="decimal" step="0.5" value="${s.weight ?? ''}" data-ex="${idx}" data-set="${si}" data-field="weight" /></div>`;
+
+    const measureCell = (s, si) => {
+      if (type === 'distance') {
+        return `<div class="input-suffix" data-suffix="m"><input type="text" inputmode="text" value="${s.distance ?? ''}" placeholder="200m" data-ex="${idx}" data-set="${si}" data-field="distance" /></div>`;
       }
-      const label = s.warmup ? 'W' : String(si + 1);
-      const labelClass = s.warmup ? 'set-label warmup' : 'set-label';
-      const weightInput = isBW
-        ? `<div style="color: var(--text-dim); font-size: 13px; text-align:center;">bodyweight</div>`
-        : `<div class="input-suffix" data-suffix="${s.unit || ''}"><input type="number" inputmode="decimal" step="0.5" value="${s.weight ?? ''}" data-ex="${idx}" data-set="${si}" data-field="weight" /></div>`;
+      if (type === 'duration') {
+        return `<div class="input-suffix" data-suffix="time"><input type="text" inputmode="text" value="${s.duration ?? ''}" placeholder="30s" data-ex="${idx}" data-set="${si}" data-field="duration" /></div>`;
+      }
+      return `<div class="input-suffix" data-suffix="reps"><input type="number" inputmode="numeric" step="1" value="${s.reps ?? ''}" data-ex="${idx}" data-set="${si}" data-field="reps" /></div>`;
+    };
+
+    const restCell = (s, si) => {
       const isLastSet = si === ex.sets.length - 1;
-      const restInput = isLastSet
+      return isLastSet
         ? `<div class="rest-placeholder">—</div>`
         : `<div class="input-suffix rest" data-suffix="min"><input type="number" inputmode="decimal" step="0.5" min="0" value="${s.restMinutes ?? ''}" data-ex="${idx}" data-set="${si}" data-field="restMinutes" /></div>`;
+    };
+
+    const setsHtml = ex.sets.map((s, si) => {
+      const label = s.warmup ? 'W' : String(si + 1);
+      const labelClass = s.warmup ? 'set-label warmup' : 'set-label';
       return `
         <div class="set-row">
           <div class="${labelClass}">${label}</div>
-          ${weightInput}
-          <div class="input-suffix" data-suffix="reps"><input type="number" inputmode="numeric" step="1" value="${s.reps ?? ''}" data-ex="${idx}" data-set="${si}" data-field="reps" /></div>
-          ${restInput}
+          ${weightCell(s, si)}
+          ${measureCell(s, si)}
+          ${restCell(s, si)}
           <input type="checkbox" class="set-done" data-ex="${idx}" data-set="${si}" data-field="done" ${s.done ? 'checked' : ''} />
         </div>`;
     }).join('');
 
-    const target = isTimed
-      ? ex.target.duration
-      : (ex.target.bodyweight ? `${ex.target.reps} reps · BW` : `${ex.target.reps} reps · ${ex.target.weight ?? '?'}${ex.target.unit || ''}`);
+    let target;
+    if (type === 'distance') {
+      target = `${ex.target.distance} · ${isBW ? 'BW' : (ex.target.weight ?? '?') + (ex.target.unit || '')}`;
+    } else if (type === 'duration') {
+      target = isBW
+        ? ex.target.duration
+        : `${ex.target.duration} · ${(ex.target.weight ?? '?')}${ex.target.unit || ''}`;
+    } else {
+      target = isBW
+        ? `${ex.target.reps} reps · BW`
+        : `${ex.target.reps} reps · ${ex.target.weight ?? '?'}${ex.target.unit || ''}`;
+    }
 
     return `
       <div class="exercise" data-exercise="${idx}">
@@ -295,14 +350,13 @@ async function renderSession(routineId) {
         </div>
         ${ex.routineNote ? `<div class="exercise-notes">${ex.routineNote}</div>` : ''}
         ${ex.previousSets ? `<div class="last-summary">${fmtLast({ sets: ex.previousSets })}</div>` : ''}
-        ${isTimed ? '' : `
         <div class="set-row set-header">
           <div class="set-label">#</div>
           <div class="col-head">${isBW ? '' : 'weight'}</div>
-          <div class="col-head">reps</div>
+          <div class="col-head">${measureCol}</div>
           <div class="col-head">rest</div>
           <div class="col-head">✓</div>
-        </div>`}
+        </div>
         ${setsHtml}
         <textarea class="notes-input" placeholder="Notes (optional)" data-ex="${idx}" data-field="notes">${ex.notes || ''}</textarea>
       </div>`;
@@ -344,6 +398,8 @@ async function renderSession(routineId) {
       else if (field === 'weight') set.weight = t.value === '' ? null : Number(t.value);
       else if (field === 'reps') set.reps = t.value === '' ? null : Number(t.value);
       else if (field === 'restMinutes') set.restMinutes = t.value === '' ? null : Number(t.value);
+      else if (field === 'distance') set.distance = t.value === '' ? null : t.value;
+      else if (field === 'duration') set.duration = t.value === '' ? null : t.value;
     } else if (t.dataset.field === 'notes') {
       ex.notes = t.value;
     }
@@ -376,14 +432,16 @@ async function saveCurrent(session) {
       target: ex.target,
       notes: ex.notes,
       sets: ex.sets
-        .filter(s => s.done || s.weight != null || s.reps != null || s.duration)
+        .filter(s => s.done || s.weight != null || s.reps != null || s.duration || s.distance)
         .map(s => {
           const out = {};
+          if (s.distance) out.distance = s.distance;
           if (s.duration) out.duration = s.duration;
           if (s.weight != null) { out.weight = s.weight; out.unit = s.unit; }
           if (s.reps != null) out.reps = s.reps;
           if (s.restMinutes != null) out.restMinutes = s.restMinutes;
           if (s.warmup) out.warmup = true;
+          if (s.done) out.done = true;
           return out;
         }),
     })),
