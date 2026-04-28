@@ -24,11 +24,12 @@ Moderate loads, higher reps, station-specific movements. Every exercise maps to 
 | :---- | :---- | :---- | :---- | :---- |
 | **1** | **Deadlift** | 3×8 | 90 lb (WU 45,70) | Sled pull \+ posterior chain. Keep your progression. |
 | **2** | **⭐ DB walking lunges (on shoulders)** | 3×50m | 25 lb DBs | MODIFIED: Hold DBs on shoulders (not at sides) to mimic 20kg sandbag position for Station 7\. Build to 100m unbroken. |
-| **3** | **⭐ Wall balls** | 3×30 reps | 6kg ball to 3m | NEW: Station 8 practice. Build to unbroken 30+. Focus on squat depth and breathing rhythm. |
-| **4** | **⭐ Goblet squat** | 3×15 | Moderate KB | NEW: Replaces single-leg extension. High-rep quad endurance for sled push and wall balls. |
-| **5** | **⭐ Plate pinch hold** | 3×30s | 2×10kg plates | NEW: Replaces single-leg curl. Grip endurance for farmer carry and sled pull rope. |
+| **3** | **Single leg extension** | 3×15 reps | 7.5 kg | Keep |
+| **4** | **⭐ Plate pinch hold** | 3×30s | 2×10kg plates | NEW: Replaces single-leg curl. Grip endurance for farmer carry and sled pull rope. |
+| **5** | **Single leg leg curl** | 3×15s | 5kg | Keep |
 | **6** | **⭐ Dead hang** | 3×max | Bodyweight | NEW: Replaces seated hip. More grip work. Track your max hold time. |
-| **7** | **Calf raise** | 3×12 | Bodyweight | Keep as-is. Calf maintenance. |
+| **7** | **Calf raise** | 3×12 | 2 x 15lb dumbbells | Keep as-is. Calf maintenance. |
+| **8** | **Seated hip** | 3x15 | 90 lb | Optional if you have time |
 
 ## **Wednesday — Arms \+ Core (merged Arm 1 & Arm 2\)**
 
@@ -40,6 +41,7 @@ One upper body session per week. Best exercises from your Arm 1 and Arm 2, prior
 | **2** | **Lat pulldown** | 3×10 | 110 lb | SkiErg pull and sled pull. Keep as-is. Key Hyrox exercise. |
 | **3** | **Overhead press (standing)** | 3×10 | 65 lb barbell | Wall ball pressing power. Try to increase weight progressively. |
 | **4** | **Barbell bent-over row** | 3×12 | 35 lb (25,35,35) | Sled pull rowing motion. Strict form. Key Hyrox exercise. |
-| **5** | **Dumbbell lateral raise** | 3×15 | 10 lb | Shoulder endurance for wall balls. Keep as-is. |
-| **6** | **Hammer curl** | 3×10 | 15 lb | Grip and pulling strength. Keep as-is. |
-| **7** | **Tricep extension** | 3×12 | 11 lb | Pressing endurance. Keep as-is. |
+| **5** | **Plank** | 3x | 30 seconds |  |
+| **6** | **Dumbbell lateral raise** | 3×15 | 10 lb | Shoulder endurance for wall balls. Keep as-is. |
+| **7** | **Hammer curl** | 3×10 | 15 lb | Grip and pulling strength. Keep as-is. |
+| **8** | **Tricep extension** | 3×12 | 11 lb | Pressing endurance. Keep as-is. |
