@@ -569,29 +569,15 @@
         },
         {
           "name": "DB walking lunges (on shoulders)",
-          "distance": "50m",
+          "reps": 20,
           "weight": 25,
           "unit": "lb",
-          "notes": "DBs on shoulders, mimic 20kg sandbag (Station 7); build to 100m unbroken"
+          "notes": "DBs on shoulders, mimic 20kg sandbag (Station 7); 10x per leg"
         },
         {
           "name": "Single leg extension",
           "reps": 15,
           "weight": 7.5,
-          "unit": "kg",
-          "notes": "Keep"
-        },
-        {
-          "name": "Plate pinch hold",
-          "duration": "30s",
-          "weight": 10,
-          "unit": "kg",
-          "notes": "2x10kg plates; grip endurance for farmer carry & sled pull rope"
-        },
-        {
-          "name": "Single leg leg curl",
-          "reps": 15,
-          "weight": 5,
           "unit": "kg",
           "notes": "Keep"
         },
@@ -602,6 +588,20 @@
           "unit": null,
           "bodyweight": true,
           "notes": "Hold to failure; track max time"
+        },
+        {
+          "name": "Plate pinch hold",
+          "duration": "30s",
+          "weight": 10,
+          "unit": "kg",
+          "notes": "2x10kg plates; grip endurance for farmer carry & sled pull rope"
+        },
+        {
+          "name": "Leg curl",
+          "reps": 15,
+          "weight": 5,
+          "unit": "kg",
+          "notes": "Both legs"
         },
         {
           "name": "Calf raise",
@@ -670,28 +670,28 @@
         },
         {
           "name": "Plank",
-          "duration": "30s",
+          "duration": "45s",
           "bodyweight": true,
           "notes": ""
         },
         {
           "name": "Dumbbell lateral raise",
           "reps": 15,
-          "weight": 10,
+          "weight": 15,
           "unit": "lb",
           "notes": "Shoulder endurance for wall balls"
         },
         {
           "name": "Hammer curl",
           "reps": 10,
-          "weight": 15,
+          "weight": 20,
           "unit": "lb",
           "notes": "Grip and pulling strength"
         },
         {
           "name": "Tricep extension",
           "reps": 12,
-          "weight": 11,
+          "weight": 13,
           "unit": "lb",
           "notes": "Pressing endurance"
         }
