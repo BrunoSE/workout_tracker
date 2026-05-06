@@ -1,0 +1,227 @@
+{
+  "date": "2026-05-05",
+  "routineId": "leg_1",
+  "routineName": "Leg 1",
+  "startedAt": "2026-05-05T11:24:52.929Z",
+  "completedAt": "2026-05-05T12:10:43.866Z",
+  "exercises": [
+    {
+      "name": "Squat barbell",
+      "target": {
+        "reps": 6,
+        "weight": 65,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "Hacer 45 60 70 prox vez",
+      "sets": [
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 6,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 55,
+          "unit": "lb",
+          "reps": 6,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 65,
+          "unit": "lb",
+          "reps": 6,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Romanian deadlift",
+      "target": {
+        "reps": 10,
+        "weight": 45,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Hip thrusts",
+      "target": {
+        "reps": 12,
+        "weight": 25,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 25,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 25,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 25,
+          "unit": "lb",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "name": "Leg extensions",
+      "target": {
+        "reps": 12,
+        "weight": 17.5,
+        "unit": "kg",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 15,
+          "unit": "kg",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 15,
+          "unit": "kg",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 15,
+          "unit": "kg",
+          "reps": 12,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Lying leg curl",
+      "target": {
+        "reps": 12,
+        "weight": 7.5,
+        "unit": "kg",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 7.5,
+          "unit": "kg",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 7.5,
+          "unit": "kg",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 7.5,
+          "unit": "kg",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Hip machine",
+      "target": {
+        "reps": 6,
+        "weight": 110,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "Last made: In to out",
+      "sets": [
+        {
+          "weight": 70,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 70,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 70,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Crunch",
+      "target": {
+        "reps": 12,
+        "weight": 83,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 83,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 83,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 83,
+          "unit": "lb",
+          "reps": 12
+        }
+      ]
+    }
+  ]
+}
