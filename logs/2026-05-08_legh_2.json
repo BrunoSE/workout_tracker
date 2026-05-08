@@ -1,0 +1,252 @@
+{
+  "date": "2026-05-08",
+  "routineId": "legh_2",
+  "routineName": "Leg 2 (Hyrox)",
+  "startedAt": "2026-05-08T11:40:53.581Z",
+  "completedAt": "2026-05-08T12:27:56.579Z",
+  "exercises": [
+    {
+      "name": "Deadlift",
+      "target": {
+        "reps": 8,
+        "weight": 90,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "Aumentar",
+      "sets": [
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 6,
+          "restMinutes": 1.5,
+          "warmup": true,
+          "done": true
+        },
+        {
+          "weight": 70,
+          "unit": "lb",
+          "reps": 6,
+          "restMinutes": 1.5,
+          "warmup": true,
+          "done": true
+        },
+        {
+          "weight": 90,
+          "unit": "lb",
+          "reps": 6,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "DB walking lunges (on shoulders)",
+      "target": {
+        "reps": 20,
+        "weight": 25,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "Subir a 30",
+      "sets": [
+        {
+          "weight": 25,
+          "unit": "lb",
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 25,
+          "unit": "lb",
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 25,
+          "unit": "lb",
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Single leg extension",
+      "target": {
+        "reps": 15,
+        "weight": 7.5,
+        "unit": "kg",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 5,
+          "unit": "kg",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 7.5,
+          "unit": "kg",
+          "reps": 15,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 7.5,
+          "unit": "kg",
+          "reps": 15,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Dead hang (max)",
+      "target": {
+        "weight": null,
+        "unit": null,
+        "duration": "max",
+        "bodyweight": true
+      },
+      "notes": "Max fue 25s",
+      "sets": [
+        {
+          "duration": "max",
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "duration": "max",
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "duration": "max",
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Plate pinch hold",
+      "target": {
+        "weight": 10,
+        "unit": "kg",
+        "duration": "30s",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "duration": "30s",
+          "weight": 25,
+          "unit": "kg",
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "duration": "30s",
+          "weight": 25,
+          "unit": "kg",
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "duration": "30s",
+          "weight": 25,
+          "unit": "kg",
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Leg curl",
+      "target": {
+        "reps": 15,
+        "weight": 5,
+        "unit": "kg",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 5,
+          "unit": "kg",
+          "reps": 15,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 5,
+          "unit": "kg",
+          "reps": 15,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 5,
+          "unit": "kg",
+          "reps": 15
+        }
+      ]
+    },
+    {
+      "name": "Calf raise",
+      "target": {
+        "reps": 12,
+        "weight": 15,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 15,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 15,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 15,
+          "unit": "lb",
+          "reps": 12,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Seated hip",
+      "target": {
+        "reps": 15,
+        "weight": 90,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 90,
+          "unit": "lb",
+          "reps": 15,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 90,
+          "unit": "lb",
+          "reps": 15,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 90,
+          "unit": "lb",
+          "reps": 15
+        }
+      ]
+    }
+  ]
+}
