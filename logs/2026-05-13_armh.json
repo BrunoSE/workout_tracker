@@ -1,0 +1,242 @@
+{
+  "date": "2026-05-13",
+  "routineId": "armh",
+  "routineName": "Arm + Core (Hyrox)",
+  "startedAt": "2026-05-13T22:39:25.072Z",
+  "completedAt": "2026-05-13T23:10:30.563Z",
+  "exercises": [
+    {
+      "name": "Bench press",
+      "target": {
+        "reps": 5,
+        "weight": 45,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 4,
+          "restMinutes": 1.5,
+          "warmup": true,
+          "done": true
+        },
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 4,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 4,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Lat pulldown",
+      "target": {
+        "reps": 10,
+        "weight": 110,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 110,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 110,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 110,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Overhead press (standing)",
+      "target": {
+        "reps": 10,
+        "weight": 65,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "Had to leave early",
+      "sets": [
+        {
+          "weight": 65,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 65,
+          "unit": "lb",
+          "reps": 8,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 65,
+          "unit": "lb",
+          "reps": 8
+        }
+      ]
+    },
+    {
+      "name": "Barbell bent over row",
+      "target": {
+        "reps": 12,
+        "weight": 35,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 25,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 25,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 25,
+          "unit": "lb",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "name": "Plank",
+      "target": {
+        "duration": "45s",
+        "bodyweight": true
+      },
+      "notes": "",
+      "sets": [
+        {
+          "duration": "30s",
+          "restMinutes": 1.5
+        },
+        {
+          "duration": "30s",
+          "restMinutes": 1.5
+        },
+        {
+          "duration": "30s"
+        }
+      ]
+    },
+    {
+      "name": "Dumbbell lateral raise",
+      "target": {
+        "reps": 15,
+        "weight": 15,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 10,
+          "unit": "lb",
+          "reps": 15,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 10,
+          "unit": "lb",
+          "reps": 15,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 10,
+          "unit": "lb",
+          "reps": 15
+        }
+      ]
+    },
+    {
+      "name": "Hammer curl",
+      "target": {
+        "reps": 10,
+        "weight": 20,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 15,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 15,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 15,
+          "unit": "lb",
+          "reps": 10
+        }
+      ]
+    },
+    {
+      "name": "Tricep extension",
+      "target": {
+        "reps": 12,
+        "weight": 13,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 11,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 11,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 11,
+          "unit": "lb",
+          "reps": 12
+        }
+      ]
+    }
+  ]
+}
