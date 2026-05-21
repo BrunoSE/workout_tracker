@@ -1,0 +1,243 @@
+{
+  "date": "2026-05-20",
+  "routineId": "legh_1",
+  "routineName": "Leg 1 (Hyrox)",
+  "startedAt": "2026-05-20T23:59:13.100Z",
+  "completedAt": "2026-05-21T00:45:13.099Z",
+  "exercises": [
+    {
+      "name": "Squat barbell",
+      "target": {
+        "reps": 6,
+        "weight": 65,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 6,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 55,
+          "unit": "lb",
+          "reps": 6,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 65,
+          "unit": "lb",
+          "reps": 6,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Romanian deadlift",
+      "target": {
+        "reps": 10,
+        "weight": 45,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 25,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Hip thrusts",
+      "target": {
+        "reps": 12,
+        "weight": 25,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 25,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Farmer carry",
+      "target": {
+        "weight": 24,
+        "unit": "kg",
+        "distance": "200m",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "distance": "50m",
+          "weight": 24,
+          "unit": "kg",
+          "restMinutes": 1.5
+        },
+        {
+          "distance": "50m",
+          "weight": 24,
+          "unit": "kg",
+          "restMinutes": 1.5
+        },
+        {
+          "distance": "50m",
+          "weight": 24,
+          "unit": "kg"
+        }
+      ]
+    },
+    {
+      "name": "Lying leg curl",
+      "target": {
+        "reps": 12,
+        "weight": 7.5,
+        "unit": "kg",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 7.5,
+          "unit": "kg",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 7.5,
+          "unit": "kg",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 7.5,
+          "unit": "kg",
+          "reps": 12,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Nordic hamstring curls",
+      "target": {
+        "reps": 8,
+        "weight": null,
+        "unit": null,
+        "bodyweight": true
+      },
+      "notes": "",
+      "sets": [
+        {
+          "reps": 8,
+          "restMinutes": 1.5
+        },
+        {
+          "reps": 8
+        }
+      ]
+    },
+    {
+      "name": "Crunch",
+      "target": {
+        "reps": 12,
+        "weight": 83,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 83,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 88,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 88,
+          "unit": "lb",
+          "reps": 12,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Dead hang",
+      "target": {
+        "weight": null,
+        "unit": null,
+        "duration": "30s",
+        "bodyweight": true
+      },
+      "notes": "",
+      "sets": [
+        {
+          "duration": "30s",
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "duration": "30s",
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "duration": "30s",
+          "done": true
+        }
+      ]
+    }
+  ]
+}
