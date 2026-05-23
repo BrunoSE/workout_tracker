@@ -253,6 +253,7 @@ function buildInitialSession(routine, lastSession) {
         routineNote: ex.notes || '',
         sets,
         previousSets: prev?.sets || null,
+        previousNotes: prev?.notes || '',
       };
     }),
   };
@@ -350,6 +351,7 @@ async function renderSession(routineId) {
         </div>
         ${ex.routineNote ? `<div class="exercise-notes">${ex.routineNote}</div>` : ''}
         ${ex.previousSets ? `<div class="last-summary">${fmtLast({ sets: ex.previousSets })}</div>` : ''}
+        ${ex.previousNotes ? `<div class="prev-notes">📝 ${ex.previousNotes}</div>` : ''}
         <div class="set-row set-header">
           <div class="set-label">#</div>
           <div class="col-head">${isBW ? '' : 'weight'}</div>

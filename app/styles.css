@@ -170,8 +170,15 @@ h2.section-title:first-child { margin-top: 4px; }
 .last-summary {
   color: var(--text-dim);
   font-size: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.prev-notes {
+  color: var(--accent);
+  font-size: 12px;
+  margin-bottom: 10px;
+  font-style: italic;
+  opacity: 0.85;
 }
 
 .set-row {
