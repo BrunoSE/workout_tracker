@@ -1,0 +1,228 @@
+{
+  "date": "2026-07-12",
+  "routineId": "arm_1",
+  "routineName": "Arm 1",
+  "startedAt": "2026-07-12T16:34:05.247Z",
+  "completedAt": "2026-07-12T17:04:34.031Z",
+  "exercises": [
+    {
+      "name": "Bench press",
+      "target": {
+        "reps": 5,
+        "weight": 45,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 5,
+          "restMinutes": 2,
+          "warmup": true,
+          "done": true
+        },
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 5,
+          "restMinutes": 2,
+          "done": true
+        },
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 5,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Lat pulldown",
+      "target": {
+        "reps": 10,
+        "weight": 110,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 120,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 120,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 120,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Overhead press",
+      "target": {
+        "reps": 10,
+        "weight": 10,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 10,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 10,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 10,
+          "unit": "lb",
+          "reps": 8,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Chest supported row",
+      "target": {
+        "reps": 12,
+        "weight": 25,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 25,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 30,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 30,
+          "unit": "lb",
+          "reps": 12,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Cable flye",
+      "target": {
+        "reps": 12,
+        "weight": 11,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 13,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 13,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 17,
+          "unit": "lb",
+          "reps": 12,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Dumbbell supinated curl",
+      "target": {
+        "reps": 10,
+        "weight": 20,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 20,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 20,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 20,
+          "unit": "lb",
+          "reps": 10
+        }
+      ]
+    },
+    {
+      "name": "Single arm rope tricep extension",
+      "target": {
+        "reps": 12,
+        "weight": 11,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 11,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 11,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 11,
+          "unit": "lb",
+          "reps": 12
+        }
+      ]
+    }
+  ]
+}
