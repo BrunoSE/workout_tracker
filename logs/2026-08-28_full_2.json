@@ -1,0 +1,232 @@
+{
+  "date": "2026-08-28",
+  "routineId": "full_2",
+  "routineName": "Full Body 2",
+  "startedAt": "2026-08-28T22:24:37.359Z",
+  "completedAt": "2026-08-28T23:35:42.804Z",
+  "exercises": [
+    {
+      "name": "Deadlift",
+      "target": {
+        "reps": 6,
+        "weight": 90,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 2,
+          "warmup": true,
+          "done": true
+        },
+        {
+          "weight": 70,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 2,
+          "warmup": true,
+          "done": true
+        },
+        {
+          "weight": 90,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Overhead press",
+      "target": {
+        "reps": 8,
+        "weight": 10,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 10,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 2,
+          "done": true
+        },
+        {
+          "weight": 10,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 2,
+          "done": true
+        },
+        {
+          "weight": 10,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "T bar row",
+      "target": {
+        "reps": 12,
+        "weight": 35,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 12,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Leg extensions",
+      "target": {
+        "reps": 12,
+        "weight": 17.5,
+        "unit": "kg",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 17.5,
+          "unit": "kg",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 17.5,
+          "unit": "kg",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 17.5,
+          "unit": "kg",
+          "reps": 12,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Cable flye",
+      "target": {
+        "reps": 12,
+        "weight": 20,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 20,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 20,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 20,
+          "unit": "lb",
+          "reps": 12,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Crunch",
+      "target": {
+        "reps": 12,
+        "weight": 83,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 83,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 83,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 83,
+          "unit": "lb",
+          "reps": 12,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Dumbbell skull crusher",
+      "target": {
+        "reps": 12,
+        "weight": 15,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 15,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 15,
+          "unit": "lb",
+          "reps": 12,
+          "restMinutes": 1.5
+        },
+        {
+          "weight": 15,
+          "unit": "lb",
+          "reps": 12
+        }
+      ]
+    }
+  ]
+}
