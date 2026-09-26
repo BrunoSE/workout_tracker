@@ -1,4 +1,5 @@
 import { getConfig, hasSyncConfig, setCachedHistory, getCachedHistory, getCachedExerciseSeeds, setCachedExerciseSeeds, getPending } from './storage.js';
+import { canonicalExerciseName } from './names.js';
 
 const API = 'https://api.github.com';
 
@@ -113,9 +114,11 @@ function seedFromExercise(ex, session) {
   };
 }
 
-// Pure merge: fold sessions into a seed map, newest date wins per exercise.
-// Same-date ties keep the existing entry, which gives the same-routine
-// fallback (merged first) priority over other routines from the same day.
+// Pure merge: fold sessions into a seed map keyed by canonical exercise
+// name (aliases like "Calf raise"/"Calf raises" share one entry), newest
+// date wins per exercise. Same-date ties keep the existing entry, which
+// gives the same-routine fallback (merged first) priority over other
+// routines from the same day.
 export function mergeExerciseSeeds(baseSeeds, sessions) {
   const merged = { ...(baseSeeds || {}) };
   for (const s of sessions || []) {
@@ -123,8 +126,9 @@ export function mergeExerciseSeeds(baseSeeds, sessions) {
     for (const ex of s.exercises) {
       const seed = seedFromExercise(ex, s);
       if (!seed) continue;
-      const cur = merged[ex.name];
-      if (!cur || (seed.date || '') > (cur.date || '')) merged[ex.name] = seed;
+      const key = canonicalExerciseName(ex.name);
+      const cur = merged[key];
+      if (!cur || (seed.date || '') > (cur.date || '')) merged[key] = seed;
     }
   }
   return merged;

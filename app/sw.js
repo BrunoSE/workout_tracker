@@ -1,4 +1,4 @@
-const VERSION = 'wt-v14';
+const VERSION = 'wt-v15';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const APP_SHELL = [
   './app.js',
   './storage.js',
   './github.js',
+  './names.js',
   './manifest.webmanifest',
   './routines.json',
   './icons/icon-192.png',

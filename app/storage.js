@@ -1,3 +1,5 @@
+import { canonicalExerciseName } from './names.js';
+
 const KEY = {
   pat: 'wt.github.pat',
   owner: 'wt.github.owner',
@@ -97,7 +99,18 @@ export function setCachedHistory(routineId, session) {
 // gym's bad signal doesn't lose cross-routine memory.
 export function getCachedExerciseSeeds() {
   const all = readJSON(KEY.exerciseSeeds, {});
-  return all && typeof all === 'object' && !Array.isArray(all) ? all : {};
+  if (!all || typeof all !== 'object' || Array.isArray(all)) return {};
+  // Re-key through canonical names: migrates caches written before aliases
+  // existed and merges entries that are now known to be the same exercise
+  // (newest date wins).
+  const out = {};
+  for (const [name, seed] of Object.entries(all)) {
+    if (!seed || typeof seed !== 'object') continue;
+    const key = canonicalExerciseName(name);
+    const cur = out[key];
+    if (!cur || (seed.date || '') > (cur.date || '')) out[key] = seed;
+  }
+  return out;
 }
 
 export function setCachedExerciseSeeds(map) {

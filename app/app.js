@@ -8,8 +8,9 @@ import {
   loadAllLastSessions, loadLastSessionForRoutine, loadExerciseSeeds,
   saveSession, testAuth,
 } from './github.js';
+import { canonicalExerciseName } from './names.js';
 
-const APP_VERSION = 'v14';
+const APP_VERSION = 'v15';
 
 const state = {
   routines: null,
@@ -224,13 +225,14 @@ function buildInitialSession(routine, lastSession, seeds) {
   if (seeds) {
     for (const [name, seed] of Object.entries(seeds)) {
       if (!seed || !Array.isArray(seed.sets)) continue;
-      lastByName.set(name, { sets: seed.sets, notes: seed.notes || '' });
+      const key = canonicalExerciseName(name);
+      lastByName.set(key, { sets: seed.sets, notes: seed.notes || '' });
       if (seed.routineId && seed.routineId !== routine.id) {
-        seedMeta.set(name, seed.routineName || seed.routineId);
+        seedMeta.set(key, seed.routineName || seed.routineId);
       }
     }
   } else if (lastSession) {
-    for (const ex of lastSession.exercises) lastByName.set(ex.name, ex);
+    for (const ex of lastSession.exercises) lastByName.set(canonicalExerciseName(ex.name), ex);
   }
   return {
     date: todayISO(),
@@ -238,7 +240,8 @@ function buildInitialSession(routine, lastSession, seeds) {
     routineName: routine.name,
     startedAt: new Date().toISOString(),
     exercises: routine.exercises.map(ex => {
-      const prev = lastByName.get(ex.name);
+      const key = canonicalExerciseName(ex.name);
+      const prev = lastByName.get(key);
       const type = exerciseType(ex);
       const setCount = ex.sets ?? 3;
       let sets;
@@ -308,7 +311,7 @@ function buildInitialSession(routine, lastSession, seeds) {
         sets,
         previousSets: prev?.sets || null,
         previousNotes: prev?.notes || '',
-        previousFrom: seedMeta.get(ex.name) || null,
+        previousFrom: seedMeta.get(key) || null,
       };
     }),
   };
