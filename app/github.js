@@ -55,12 +55,14 @@ export async function loadLastSessionForRoutine(routineId) {
   if (!hasSyncConfig()) return getCachedHistory(routineId);
   try {
     const files = await listLogs();
-    // parseLogName handles both `date_id.json` and `date_id_tHHMM.json`
-    // (lexicographic order == chronological, so the first after sorting
-    // desc is the newest, including any same-day second session).
+    // parseLogName handles `date_id.json` plus `_tHHMMSS` / `_N` suffixes.
+    // NOTE: code-unit order (not localeCompare — ICU collation weights `.`
+    // vs `_` differently and would rank the plain base file above stamped
+    // same-day files). For these ASCII date-prefixed names, code-unit
+    // order == chronological, so [0] after sorting desc is the newest.
     const matching = files
       .filter(f => parseLogName(f.name)?.routineId === routineId)
-      .sort((a, b) => b.name.localeCompare(a.name));
+      .sort(compareFileNameDesc);
     if (matching.length === 0) return getCachedHistory(routineId);
     const session = await fetchLog(matching[0].path);
     setCachedHistory(routineId, session);
@@ -69,6 +71,16 @@ export async function loadLastSessionForRoutine(routineId) {
     console.warn('loadLastSession failed, using cache', err);
     return getCachedHistory(routineId);
   }
+}
+
+// Descending sort by file name using code-unit comparison. Log names are
+// ASCII `date_id[_suffix].json`, so this == newest-first. (Do NOT use
+// localeCompare here: ICU collation ranks the plain `date_id.json` above
+// stamped same-day files like `date_id_t183045_2.json`, hiding the newest
+// save of a multi-save day.)
+function compareFileNameDesc(a, b) {
+  const an = a.name, bn = b.name;
+  return an < bn ? 1 : an > bn ? -1 : 0;
 }
 
 export async function loadAllLastSessions() {
@@ -152,7 +164,7 @@ export async function loadExerciseSeeds(fallbackSession) {
   }
   try {
     const files = (await listLogs())
-      .sort((a, b) => b.name.localeCompare(a.name))
+      .sort(compareFileNameDesc)
       .slice(0, SEED_FILE_LIMIT);
     const sessions = (
       await Promise.all(
