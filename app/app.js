@@ -9,7 +9,7 @@ import {
   saveSession, testAuth,
 } from './github.js';
 
-const APP_VERSION = 'v12';
+const APP_VERSION = 'v13';
 
 const state = {
   routines: null,
@@ -23,16 +23,27 @@ const backBtn = document.getElementById('back-btn');
 const settingsBtn = document.getElementById('settings-btn');
 const toastEl = document.getElementById('toast');
 
-backBtn.addEventListener('click', () => history.back());
+backBtn.addEventListener('click', () => {
+  // Landing directly on a session URL (bookmark/PWA) leaves no in-app
+  // history — history.back() would exit the app, so go home instead.
+  if (window.history.length > 1) history.back();
+  else location.hash = '#/';
+});
 settingsBtn.addEventListener('click', () => { location.hash = '#/settings'; });
 window.addEventListener('hashchange', route);
 window.addEventListener('online', flushPending);
 
+let toastTimer = 0;
+
 function toast(msg, kind = '') {
   toastEl.textContent = msg;
   toastEl.className = `toast ${kind}`;
-  setTimeout(() => toastEl.classList.add('hidden'), 2800);
   toastEl.classList.remove('hidden');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toastEl.classList.add('hidden');
+    toastTimer = 0;
+  }, 2800);
 }
 
 function todayISO() {
@@ -55,6 +66,15 @@ function parseLocalDate(iso) {
 
 function startOfLocalDay(d = new Date()) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+// Notes and set values are user input persisted to GitHub and re-rendered
+// as HTML — escape everything interpolated into markup (stored-XSS guard).
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => (
+    c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' :
+    c === '"' ? '&quot;' : '&#39;'
+  ));
 }
 
 function humanDate(iso) {
@@ -150,7 +170,7 @@ async function renderHome(routeId = state.routeId) {
       const theme = themeFromRoutineId(r.id);
       return `
         <button class="card" data-theme="${theme}" data-routine="${r.id}">
-          <div class="card-title">${r.name}</div>
+          <div class="card-title">${escapeHtml(r.name)}</div>
           <div class="card-sub">${sub}</div>
         </button>`;
     };
@@ -312,11 +332,11 @@ async function renderSession(routineId, routeId = state.routeId) {
     const parts = prev.sets.map(s => {
       const w = (s.weight != null) ? `${s.weight}${s.unit || ''}` : (s.bodyweight === false ? '?' : 'BW');
       if (s.distance) return `${s.distance}@${w}`;
-      if (s.duration) return s.weight != null ? `${s.duration}@${w}` : s.duration;
+      if (s.duration) return s.weight != null ? `${s.duration}@${w}` : String(s.duration);
       if (s.weight == null) return `BW×${s.reps}`;
       return `${w}×${s.reps}`;
     });
-    return `Last: ${parts.join(', ')}`;
+    return `Last: ${escapeHtml(parts.join(', '))}`;
   }
 
   function renderExercise(ex, idx) {
@@ -326,14 +346,14 @@ async function renderSession(routineId, routeId = state.routeId) {
 
     const weightCell = (s, si) => isBW
       ? `<div style="color: var(--text-dim); font-size: 13px; text-align:center;">BW</div>`
-      : `<div class="input-suffix" data-suffix="${s.unit || ''}"><input type="number" inputmode="decimal" step="0.5" value="${s.weight ?? ''}" data-ex="${idx}" data-set="${si}" data-field="weight" /></div>`;
+      : `<div class="input-suffix" data-suffix="${escapeHtml(s.unit || '')}"><input type="number" inputmode="decimal" step="0.5" value="${s.weight ?? ''}" data-ex="${idx}" data-set="${si}" data-field="weight" /></div>`;
 
     const measureCell = (s, si) => {
       if (type === 'distance') {
-        return `<div class="input-suffix" data-suffix="m"><input type="text" inputmode="text" value="${s.distance ?? ''}" placeholder="200m" data-ex="${idx}" data-set="${si}" data-field="distance" /></div>`;
+        return `<div class="input-suffix" data-suffix="m"><input type="text" inputmode="text" value="${escapeHtml(s.distance ?? '')}" placeholder="200m" data-ex="${idx}" data-set="${si}" data-field="distance" /></div>`;
       }
       if (type === 'duration') {
-        return `<div class="input-suffix" data-suffix="time"><input type="text" inputmode="text" value="${s.duration ?? ''}" placeholder="30s" data-ex="${idx}" data-set="${si}" data-field="duration" /></div>`;
+        return `<div class="input-suffix" data-suffix="time"><input type="text" inputmode="text" value="${escapeHtml(s.duration ?? '')}" placeholder="30s" data-ex="${idx}" data-set="${si}" data-field="duration" /></div>`;
       }
       return `<div class="input-suffix" data-suffix="reps"><input type="number" inputmode="numeric" step="1" value="${s.reps ?? ''}" data-ex="${idx}" data-set="${si}" data-field="reps" /></div>`;
     };
@@ -374,12 +394,12 @@ async function renderSession(routineId, routeId = state.routeId) {
     return `
       <div class="exercise" data-exercise="${idx}">
         <div class="exercise-header">
-          <div class="exercise-name">${ex.name}</div>
-          <div class="exercise-target">${target}</div>
+          <div class="exercise-name">${escapeHtml(ex.name)}</div>
+          <div class="exercise-target">${escapeHtml(target)}</div>
         </div>
-        ${ex.routineNote ? `<div class="exercise-notes">${ex.routineNote}</div>` : ''}
+        ${ex.routineNote ? `<div class="exercise-notes">${escapeHtml(ex.routineNote)}</div>` : ''}
         ${ex.previousSets ? `<div class="last-summary">${fmtLast({ sets: ex.previousSets })}</div>` : ''}
-        ${ex.previousNotes ? `<div class="prev-notes">📝 ${ex.previousNotes}</div>` : ''}
+        ${ex.previousNotes ? `<div class="prev-notes">📝 ${escapeHtml(ex.previousNotes)}</div>` : ''}
         <div class="set-row set-header">
           <div class="set-label">#</div>
           <div class="col-head">${isBW ? '' : 'weight'}</div>
@@ -388,18 +408,18 @@ async function renderSession(routineId, routeId = state.routeId) {
           <div class="col-head">✓</div>
         </div>
         ${setsHtml}
-        <textarea class="notes-input" placeholder="Notes (optional)" data-ex="${idx}" data-field="notes">${ex.notes || ''}</textarea>
+        <textarea class="notes-input" placeholder="Notes (optional)" data-ex="${idx}" data-field="notes">${escapeHtml(ex.notes || '')}</textarea>
       </div>`;
   }
 
   const lastDate = parseLocalDate(lastSession?.date) || parseLocalDate(lastSession?.completedAt);
   let lastBanner;
   if (!lastDate) {
-    lastBanner = `<div class="last-workout-banner"><span class="label">Last ${routine.name}:</span> <span class="value na">N/A</span></div>`;
+    lastBanner = `<div class="last-workout-banner"><span class="label">Last ${escapeHtml(routine.name)}:</span> <span class="value na">N/A</span></div>`;
   } else {
     const days = Math.max(0, Math.round((startOfLocalDay() - startOfLocalDay(lastDate)) / 86400000));
     const phrase = days === 0 ? 'today' : days === 1 ? '1 day ago' : `${days} days ago`;
-    lastBanner = `<div class="last-workout-banner"><span class="label">Last ${routine.name}:</span> <span class="value">${phrase}</span> <span class="date-aside">(${lastSession.date})</span></div>`;
+    lastBanner = `<div class="last-workout-banner"><span class="label">Last ${escapeHtml(routine.name)}:</span> <span class="value">${phrase}</span> <span class="date-aside">(${escapeHtml(lastSession.date)})</span></div>`;
   }
 
   container.innerHTML = `
@@ -456,7 +476,7 @@ async function renderSession(routineId, routeId = state.routeId) {
 
   document.getElementById('discard-btn').addEventListener('click', () => {
     if (!confirm('Discard this session?')) return;
-    clearDraft();
+    clearDraft(routineId);
     location.hash = '#/';
   });
 
@@ -498,7 +518,7 @@ async function saveCurrent(session) {
     addPending(payload);
     setCachedHistory(payload.routineId, payload);
     state.lastSessions[payload.routineId] = payload;
-    clearDraft();
+    clearDraft(session.routineId);
     toast('Saved locally — configure GitHub to sync', 'ok');
     location.hash = '#/';
     return;
@@ -508,7 +528,7 @@ async function saveCurrent(session) {
     await saveSession(payload);
     setCachedHistory(payload.routineId, payload);
     state.lastSessions[payload.routineId] = payload;
-    clearDraft();
+    clearDraft(session.routineId);
     toast('Session saved to GitHub', 'ok');
     location.hash = '#/';
   } catch (err) {
@@ -516,24 +536,32 @@ async function saveCurrent(session) {
     addPending(payload);
     setCachedHistory(payload.routineId, payload);
     state.lastSessions[payload.routineId] = payload;
-    clearDraft();
+    clearDraft(session.routineId);
     toast('Offline — queued for sync', 'error');
     location.hash = '#/';
   }
 }
 
+let flushing = false;
+
 async function flushPending() {
+  if (flushing) return;
   const list = getPending();
   if (list.length === 0 || !hasSyncConfig() || !navigator.onLine) return;
-  const remaining = [];
-  for (const s of list) {
-    try { await saveSession(s); }
-    catch (err) { remaining.push(s); }
-  }
-  setPending(remaining);
-  if (remaining.length < list.length) {
-    toast(`Synced ${list.length - remaining.length} session(s)`, 'ok');
-    if (location.hash === '#/' || location.hash === '') renderHome(state.routeId);
+  flushing = true;
+  try {
+    const remaining = [];
+    for (const s of list) {
+      try { await saveSession(s); }
+      catch (err) { remaining.push(s); }
+    }
+    setPending(remaining);
+    if (remaining.length < list.length) {
+      toast(`Synced ${list.length - remaining.length} session(s)`, 'ok');
+      if (location.hash === '#/' || location.hash === '') renderHome(state.routeId);
+    }
+  } finally {
+    flushing = false;
   }
 }
 
@@ -543,19 +571,19 @@ function renderSettings() {
   app.innerHTML = `
     <div class="settings-group">
       <label>GitHub username / org</label>
-      <input type="text" id="cfg-owner" value="${cfg.owner}" placeholder="your-github-username" autocomplete="off" />
+      <input type="text" id="cfg-owner" value="${escapeHtml(cfg.owner)}" placeholder="your-github-username" autocomplete="off" />
     </div>
     <div class="settings-group">
       <label>Repository name</label>
-      <input type="text" id="cfg-repo" value="${cfg.repo}" autocomplete="off" />
+      <input type="text" id="cfg-repo" value="${escapeHtml(cfg.repo)}" autocomplete="off" />
     </div>
     <div class="settings-group">
       <label>Branch</label>
-      <input type="text" id="cfg-branch" value="${cfg.branch}" autocomplete="off" />
+      <input type="text" id="cfg-branch" value="${escapeHtml(cfg.branch)}" autocomplete="off" />
     </div>
     <div class="settings-group">
       <label>Personal access token (fine-grained)</label>
-      <input type="password" id="cfg-pat" value="${cfg.pat}" placeholder="github_pat_..." autocomplete="off" />
+      <input type="password" id="cfg-pat" value="${escapeHtml(cfg.pat)}" placeholder="github_pat_..." autocomplete="off" />
       <div class="help">
         Needs <strong>Contents: read &amp; write</strong> scoped to this repo only.
         Create at github.com → Settings → Developer settings → Fine-grained tokens.

@@ -3,7 +3,8 @@ const KEY = {
   owner: 'wt.github.owner',
   repo: 'wt.github.repo',
   branch: 'wt.github.branch',
-  draft: 'wt.draft',
+  draftPrefix: 'wt.draft.',
+  draftLegacy: 'wt.draft',
   history: 'wt.history',
   pending: 'wt.pending',
   lastSync: 'wt.lastSync',
@@ -40,18 +41,40 @@ function readJSON(key, fallback) {
   }
 }
 
+function draftKey(routineId) {
+  return `${KEY.draftPrefix}${routineId}`;
+}
+
 export function getDraft(routineId) {
-  const d = readJSON(KEY.draft, null);
-  if (!d || d.routineId !== routineId) return null;
-  return d;
+  // Per-routine key (current).
+  const d = readJSON(draftKey(routineId), null);
+  if (d) return d;
+  // Migrate legacy single global draft once: adopt it if it belongs to
+  // this routine, otherwise leave other routines' drafts untouched.
+  const legacy = readJSON(KEY.draftLegacy, null);
+  if (legacy && legacy.routineId === routineId) {
+    try { localStorage.setItem(draftKey(routineId), JSON.stringify(legacy)); } catch {}
+    return legacy;
+  }
+  return null;
 }
 
 export function saveDraft(draft) {
-  localStorage.setItem(KEY.draft, JSON.stringify(draft));
+  if (!draft || !draft.routineId) return;
+  localStorage.setItem(draftKey(draft.routineId), JSON.stringify(draft));
 }
 
-export function clearDraft() {
-  localStorage.removeItem(KEY.draft);
+export function clearDraft(routineId) {
+  if (routineId) {
+    localStorage.removeItem(draftKey(routineId));
+    // Also drop a legacy global draft for the same routine, if present.
+    const legacy = readJSON(KEY.draftLegacy, null);
+    if (legacy && legacy.routineId === routineId) {
+      localStorage.removeItem(KEY.draftLegacy);
+    }
+    return;
+  }
+  localStorage.removeItem(KEY.draftLegacy);
 }
 
 export function getCachedHistory(routineId) {
