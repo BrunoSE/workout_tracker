@@ -5,11 +5,11 @@ import {
   getPending, addPending, setPending,
 } from './storage.js';
 import {
-  loadAllLastSessions, loadLastSessionForRoutine,
+  loadAllLastSessions, loadLastSessionForRoutine, loadExerciseSeeds,
   saveSession, testAuth,
 } from './github.js';
 
-const APP_VERSION = 'v13';
+const APP_VERSION = 'v14';
 
 const state = {
   routines: null,
@@ -215,9 +215,21 @@ function exerciseType(ex) {
   return 'reps';
 }
 
-function buildInitialSession(routine, lastSession) {
+function buildInitialSession(routine, lastSession, seeds) {
+  // Seeds are the latest known sets per exercise across ALL routines
+  // (Bench press done in Full Body 1 seeds Bench press in Arm 1).
+  // Falls back to the routine's own last session when no seed exists.
   const lastByName = new Map();
-  if (lastSession) {
+  const seedMeta = new Map();
+  if (seeds) {
+    for (const [name, seed] of Object.entries(seeds)) {
+      if (!seed || !Array.isArray(seed.sets)) continue;
+      lastByName.set(name, { sets: seed.sets, notes: seed.notes || '' });
+      if (seed.routineId && seed.routineId !== routine.id) {
+        seedMeta.set(name, seed.routineName || seed.routineId);
+      }
+    }
+  } else if (lastSession) {
     for (const ex of lastSession.exercises) lastByName.set(ex.name, ex);
   }
   return {
@@ -296,6 +308,7 @@ function buildInitialSession(routine, lastSession) {
         sets,
         previousSets: prev?.sets || null,
         previousNotes: prev?.notes || '',
+        previousFrom: seedMeta.get(ex.name) || null,
       };
     }),
   };
@@ -318,8 +331,13 @@ async function renderSession(routineId, routeId = state.routeId) {
   }
   if (routeId !== state.routeId) return;
 
+  // Latest weight/sets per exercise across all routines (cached offline).
+  let seeds = null;
+  try { seeds = await loadExerciseSeeds(lastSession); } catch {}
+  if (routeId !== state.routeId) return;
+
   const draft = getDraft(routineId);
-  const session = draft || buildInitialSession(routine, lastSession);
+  const session = draft || buildInitialSession(routine, lastSession, seeds);
   if (draft && session.date !== todayISO()) {
     session.date = todayISO();
     saveDraft(session);
@@ -327,7 +345,7 @@ async function renderSession(routineId, routeId = state.routeId) {
 
   const container = document.createElement('div');
 
-  function fmtLast(prev) {
+  function fmtLast(prev, label = 'Last') {
     if (!prev || !prev.sets) return '';
     const parts = prev.sets.map(s => {
       const w = (s.weight != null) ? `${s.weight}${s.unit || ''}` : (s.bodyweight === false ? '?' : 'BW');
@@ -336,7 +354,7 @@ async function renderSession(routineId, routeId = state.routeId) {
       if (s.weight == null) return `BW×${s.reps}`;
       return `${w}×${s.reps}`;
     });
-    return `Last: ${escapeHtml(parts.join(', '))}`;
+    return escapeHtml(`${label}: ${parts.join(', ')}`);
   }
 
   function renderExercise(ex, idx) {
@@ -398,7 +416,7 @@ async function renderSession(routineId, routeId = state.routeId) {
           <div class="exercise-target">${escapeHtml(target)}</div>
         </div>
         ${ex.routineNote ? `<div class="exercise-notes">${escapeHtml(ex.routineNote)}</div>` : ''}
-        ${ex.previousSets ? `<div class="last-summary">${fmtLast({ sets: ex.previousSets })}</div>` : ''}
+        ${ex.previousSets ? `<div class="last-summary">${fmtLast({ sets: ex.previousSets }, ex.previousFrom ? `Last (${ex.previousFrom})` : 'Last')}</div>` : ''}
         ${ex.previousNotes ? `<div class="prev-notes">📝 ${escapeHtml(ex.previousNotes)}</div>` : ''}
         <div class="set-row set-header">
           <div class="set-label">#</div>

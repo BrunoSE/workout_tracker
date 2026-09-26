@@ -1,4 +1,4 @@
-import { getConfig, hasSyncConfig, setCachedHistory, getCachedHistory } from './storage.js';
+import { getConfig, hasSyncConfig, setCachedHistory, getCachedHistory, getCachedExerciseSeeds, setCachedExerciseSeeds, getPending } from './storage.js';
 
 const API = 'https://api.github.com';
 
@@ -99,6 +99,71 @@ export async function loadAllLastSessions() {
   } catch (err) {
     console.warn('loadAllLastSessions failed', err);
     return {};
+  }
+}
+
+function seedFromExercise(ex, session) {
+  if (!ex || !ex.name || !Array.isArray(ex.sets)) return null;
+  return {
+    sets: ex.sets,
+    notes: ex.notes || '',
+    date: session.date || '',
+    routineId: session.routineId,
+    routineName: session.routineName || session.routineId,
+  };
+}
+
+// Pure merge: fold sessions into a seed map, newest date wins per exercise.
+// Same-date ties keep the existing entry, which gives the same-routine
+// fallback (merged first) priority over other routines from the same day.
+export function mergeExerciseSeeds(baseSeeds, sessions) {
+  const merged = { ...(baseSeeds || {}) };
+  for (const s of sessions || []) {
+    if (!s || !Array.isArray(s.exercises)) continue;
+    for (const ex of s.exercises) {
+      const seed = seedFromExercise(ex, s);
+      if (!seed) continue;
+      const cur = merged[ex.name];
+      if (!cur || (seed.date || '') > (cur.date || '')) merged[ex.name] = seed;
+    }
+  }
+  return merged;
+}
+
+// Latest sets/weight per exercise across ALL routines (not just this one).
+// `fallbackSession` is the routine's own last session (or its cache) so the
+// same routine stays the tie-breaker and offline still seeds what it can.
+// Result is cached for offline gym use. Caps GitHub reads to the most recent
+// files so history growth doesn't slow down opening a session.
+const SEED_FILE_LIMIT = 12;
+
+export async function loadExerciseSeeds(fallbackSession) {
+  const fb = fallbackSession ? [fallbackSession] : [];
+  const cached = getCachedExerciseSeeds();
+  // Sessions saved while offline sit in the pending queue before reaching
+  // GitHub — they still happened, so they count as seeds.
+  const pending = getPending();
+  if (!hasSyncConfig() || typeof navigator === 'undefined' || !navigator.onLine) {
+    return mergeExerciseSeeds(cached, [...pending, ...fb]);
+  }
+  try {
+    const files = (await listLogs())
+      .sort((a, b) => b.name.localeCompare(a.name))
+      .slice(0, SEED_FILE_LIMIT);
+    const sessions = (
+      await Promise.all(
+        files.map(async f => {
+          try { return await fetchLog(f.path); }
+          catch (e) { console.warn('fetchLog failed', f.path, e); return null; }
+        })
+      )
+    ).filter(Boolean);
+    const merged = mergeExerciseSeeds(cached, [...pending, ...fb, ...sessions]);
+    setCachedExerciseSeeds(merged);
+    return merged;
+  } catch (err) {
+    console.warn('loadExerciseSeeds failed, using cache', err);
+    return mergeExerciseSeeds(cached, [...pending, ...fb]);
   }
 }
 

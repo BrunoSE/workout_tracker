@@ -6,6 +6,7 @@ const KEY = {
   draftPrefix: 'wt.draft.',
   draftLegacy: 'wt.draft',
   history: 'wt.history',
+  exerciseSeeds: 'wt.exerciseSeeds',
   pending: 'wt.pending',
   lastSync: 'wt.lastSync',
 };
@@ -88,6 +89,20 @@ export function setCachedHistory(routineId, session) {
   const next = all && typeof all === 'object' && !Array.isArray(all) ? all : {};
   next[routineId] = session;
   localStorage.setItem(KEY.history, JSON.stringify(next));
+}
+
+// Per-exercise latest-known sets across ALL routines:
+// { [exerciseName]: { sets, notes, date, routineId, routineName } }.
+// Refreshed from GitHub when online; reused as the offline fallback so the
+// gym's bad signal doesn't lose cross-routine memory.
+export function getCachedExerciseSeeds() {
+  const all = readJSON(KEY.exerciseSeeds, {});
+  return all && typeof all === 'object' && !Array.isArray(all) ? all : {};
+}
+
+export function setCachedExerciseSeeds(map) {
+  if (!map || typeof map !== 'object' || Array.isArray(map)) return;
+  localStorage.setItem(KEY.exerciseSeeds, JSON.stringify(map));
 }
 
 export function getPending() {
