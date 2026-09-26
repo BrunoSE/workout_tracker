@@ -10,7 +10,7 @@ import {
 } from './github.js';
 import { canonicalExerciseName } from './names.js';
 
-const APP_VERSION = 'v20';
+const APP_VERSION = 'v21';
 
 const state = {
   routines: null,
