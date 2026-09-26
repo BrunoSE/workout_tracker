@@ -4,12 +4,13 @@
 // Standalone module (no imports) so storage.js can use it too.
 
 function normalize(name) {
-  return String(name ?? '').trim().toLowerCase().replace(/\s+/g, ' ');
+  // Hyphens count as spaces so "Single-arm ..." matches "Single arm ...".
+  return String(name ?? '').trim().toLowerCase().replace(/[-–—]/g, ' ').replace(/\s+/g, ' ');
 }
 
 // canonical -> extra spellings (all compared after normalize())
 const ALIAS_GROUPS = {
-  'dumbbell walking lounge': ['dumbbell walking lounges', 'db walking lunges (on shoulders)'],
+  'dumbbell walking lounge': ['dumbbell walking lounges', 'dumbbell walking lunge', 'db walking lunges (on shoulders)'],
   'dumbbell lateral raise': ['dumbbell lateral raises', 'dumbbell lat raise'],
   'calf raise': ['calf raises'],
   'reverse lat pulldown': ['reverse grip lat pulldown'],

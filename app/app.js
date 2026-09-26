@@ -10,7 +10,7 @@ import {
 } from './github.js';
 import { canonicalExerciseName } from './names.js';
 
-const APP_VERSION = 'v17';
+const APP_VERSION = 'v19';
 
 const state = {
   routines: null,
@@ -115,6 +115,82 @@ function applyTheme(theme) {
   document.body.dataset.theme = theme;
 }
 
+// Folders group routines that aren't part of the everyday lineup.
+// The usual Legs/Arms/Full Body routines render inline on home; every
+// other category shows as a folder card leading to a folder view.
+const FOLDERS = [
+  { key: 'hyrox', name: 'Hyrox', theme: 'hyrox' },
+  { key: 'tmp_upper_lower', name: 'Upper / Lower · Test', theme: 'default' },
+  { key: 'tmp_body_part_split', name: 'Body Part Split · Test', theme: 'default' },
+  { key: 'tmp_full_body', name: 'Full Body · Test', theme: 'default' },
+];
+
+function folderMeta(key) {
+  const known = FOLDERS.find(f => f.key === key);
+  if (known) return known;
+  const name = key.replace(/^tmp_/, '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  return { key, name, theme: 'default' };
+}
+
+function routineCard(r) {
+  const last = state.lastSessions[r.id];
+  const sub = last
+    ? `Last: ${humanDate(last.date)} · ${last.exercises.length} exercises`
+    : `${r.exercises.length} exercises`;
+  const theme = themeFromRoutineId(r.id);
+  return `
+    <button class="card" data-theme="${theme}" data-routine="${r.id}">
+      <div class="card-title">${escapeHtml(r.name)}</div>
+      <div class="card-sub">${sub}</div>
+    </button>`;
+}
+
+function bindRoutineCards(root = app) {
+  root.querySelectorAll('[data-routine]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      location.hash = `#/session/${btn.dataset.routine}`;
+    });
+  });
+}
+
+function folderLastText(key) {
+  let best = null;
+  for (const r of state.routines || []) {
+    if (r.category !== key) continue;
+    const d = state.lastSessions[r.id]?.date;
+    if (typeof d === 'string' && (!best || d > best)) best = d;
+  }
+  return best ? `Last: ${humanDate(best)}` : 'Not started yet';
+}
+
+function folderCard(folder, count) {
+  return `
+    <button class="card folder-card" data-theme="${folder.theme}" data-folder="${folder.key}">
+      <div class="card-title">🗂 ${escapeHtml(folder.name)}</div>
+      <div class="card-sub">${count} workout${count === 1 ? '' : 's'} · ${folderLastText(folder.key)}</div>
+    </button>`;
+}
+
+function bindFolderCards(root = app) {
+  root.querySelectorAll('[data-folder]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      location.hash = `#/folder/${btn.dataset.folder}`;
+    });
+  });
+}
+
+async function refreshLastSessions(routeId, rerender) {
+  if (!hasSyncConfig() || !navigator.onLine) return;
+  try {
+    const sessions = await loadAllLastSessions();
+    if (routeId !== state.routeId) return;
+    state.lastSessions = { ...state.lastSessions, ...sessions };
+    rerender();
+  } catch (err) {
+    console.warn('bg refresh failed', err);
+  }
+}
+
 async function route() {
   const routeId = ++state.routeId;
   const hash = location.hash || '#/';
@@ -127,6 +203,12 @@ async function route() {
   } else if (parts[0] === 'session' && parts[1]) {
     applyTheme(themeFromRoutineId(parts[1]));
     await renderSession(parts[1], routeId);
+  } else if (parts[0] === 'folder' && parts[1]) {
+    let folderKey = parts[1];
+    try { folderKey = decodeURIComponent(folderKey); } catch { /* keep raw key */ }
+    const folder = folderMeta(folderKey);
+    applyTheme(folder.theme);
+    await renderFolder(folder, routeId);
   } else if (parts[0] === 'settings') {
     applyTheme('default');
     renderSettings();
@@ -158,56 +240,75 @@ async function renderHome(routeId = state.routeId) {
 
   const render = () => {
     if (routeId !== state.routeId) return;
-    const hyrox = routines.filter(r => r.category === 'hyrox').sort((a, b) => a.id.localeCompare(b.id));
     const legs  = routines.filter(r => r.id.startsWith('leg_')).sort((a, b) => a.id.localeCompare(b.id));
     const arms  = routines.filter(r => r.id.startsWith('arm_')).sort((a, b) => a.id.localeCompare(b.id));
     const full  = routines.filter(r => r.id.startsWith('full_')).sort((a, b) => a.id.localeCompare(b.id));
 
-    const cardFor = r => {
-      const last = state.lastSessions[r.id];
-      const sub = last
-        ? `Last: ${humanDate(last.date)} · ${last.exercises.length} exercises`
-        : `${r.exercises.length} exercises`;
-      const theme = themeFromRoutineId(r.id);
-      return `
-        <button class="card" data-theme="${theme}" data-routine="${r.id}">
-          <div class="card-title">${escapeHtml(r.name)}</div>
-          <div class="card-sub">${sub}</div>
-        </button>`;
-    };
-
     const section = (title, list) => list.length
-      ? `<h2 class="section-title">${title}</h2>${list.map(cardFor).join('')}`
+      ? `<h2 class="section-title">${title}</h2>${list.map(routineCard).join('')}`
+      : '';
+
+    // Folders: known ones first, then any other category not shown inline
+    // (future test folders appear automatically).
+    const inlineIds = new Set([...legs, ...arms, ...full].map(r => r.id));
+    const extraKeys = [...new Set(
+      routines.filter(r => !inlineIds.has(r.id)).map(r => r.category)
+    )];
+    const folderKeys = [
+      ...FOLDERS.map(f => f.key).filter(k => extraKeys.includes(k)),
+      ...extraKeys.filter(k => !FOLDERS.some(f => f.key === k)).sort(),
+    ];
+    const foldersHtml = folderKeys.length
+      ? `<h2 class="section-title">Folders</h2>${folderKeys.map(k => {
+          const folder = folderMeta(k);
+          const count = routines.filter(r => r.category === k).length;
+          return folderCard(folder, count);
+        }).join('')}`
       : '';
 
     app.innerHTML = `
       ${pendingBanner}
-      ${section('Hyrox', hyrox)}
       ${section('Legs', legs)}
       ${section('Arms', arms)}
       ${section('Full Body', full)}
+      ${foldersHtml}
     `;
-    app.querySelectorAll('[data-routine]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        location.hash = `#/session/${btn.dataset.routine}`;
-      });
-    });
+    bindRoutineCards();
+    bindFolderCards();
     const flush = document.getElementById('flush-now');
     if (flush) flush.addEventListener('click', e => { e.preventDefault(); flushPending(); });
   };
 
   render();
 
-  if (hasSyncConfig() && navigator.onLine) {
-    try {
-      const sessions = await loadAllLastSessions();
-      if (routeId !== state.routeId) return;
-      state.lastSessions = { ...state.lastSessions, ...sessions };
-      render();
-    } catch (err) {
-      console.warn('bg refresh failed', err);
-    }
+  await refreshLastSessions(routeId, render);
+}
+
+async function renderFolder(folder, routeId = state.routeId) {
+  screenTitle.textContent = folder.name;
+  app.innerHTML = '<div class="empty-hint">Loading…</div>';
+  const routines = await loadRoutines();
+  if (routeId !== state.routeId) return;
+
+  for (const r of routines) {
+    const cached = getCachedHistory(r.id);
+    if (cached) state.lastSessions[r.id] = cached;
   }
+
+  const render = () => {
+    if (routeId !== state.routeId) return;
+    const list = routines
+      .filter(r => r.category === folder.key)
+      .sort((a, b) => a.id.localeCompare(b.id));
+    app.innerHTML = list.length
+      ? list.map(routineCard).join('')
+      : '<div class="empty-hint">No workouts in this folder yet.</div>';
+    bindRoutineCards();
+  };
+
+  render();
+
+  await refreshLastSessions(routeId, render);
 }
 
 function exerciseType(ex) {
@@ -219,10 +320,19 @@ function exerciseType(ex) {
 function buildInitialSession(routine, lastSession, seeds) {
   // Seeds are the latest known sets per exercise across ALL routines
   // (Bench press done in Full Body 1 seeds Bench press in Arm 1).
-  // Falls back to the routine's own last session when no seed exists.
+  // The routine's own last session is always merged in as the fallback,
+  // so exercises with no cross-routine seed still seed from it.
   const lastByName = new Map();
   const seedMeta = new Map();
-  if (seeds) {
+  const fromSession = session => {
+    if (!session || !Array.isArray(session.exercises)) return;
+    for (const ex of session.exercises) {
+      if (!ex || !ex.name || !Array.isArray(ex.sets)) continue;
+      const key = canonicalExerciseName(ex.name);
+      if (!lastByName.has(key)) lastByName.set(key, ex);
+    }
+  };
+  if (seeds && Object.keys(seeds).length) {
     for (const [name, seed] of Object.entries(seeds)) {
       if (!seed || !Array.isArray(seed.sets)) continue;
       const key = canonicalExerciseName(name);
@@ -231,8 +341,11 @@ function buildInitialSession(routine, lastSession, seeds) {
         seedMeta.set(key, seed.routineName || seed.routineId);
       }
     }
-  } else if (lastSession) {
-    for (const ex of lastSession.exercises) lastByName.set(canonicalExerciseName(ex.name), ex);
+    // Fill gaps the seed map doesn't cover (e.g. seed cache predates an
+    // exercise) from the routine's own last session.
+    fromSession(lastSession);
+  } else {
+    fromSession(lastSession);
   }
   return {
     date: todayISO(),
@@ -334,12 +447,16 @@ async function renderSession(routineId, routeId = state.routeId) {
   }
   if (routeId !== state.routeId) return;
 
-  // Latest weight/sets per exercise across all routines (cached offline).
-  let seeds = null;
-  try { seeds = await loadExerciseSeeds(lastSession); } catch {}
-  if (routeId !== state.routeId) return;
-
   const draft = getDraft(routineId);
+  // Latest weight/sets per exercise across all routines (cached offline).
+  // Skipped when resuming a draft — seeds only feed fresh sessions, so
+  // opening a draft costs no network (listLogs + up to 12 file fetches).
+  let seeds = null;
+  if (!draft) {
+    try { seeds = await loadExerciseSeeds(lastSession); } catch {}
+    if (routeId !== state.routeId) return;
+  }
+
   const session = draft || buildInitialSession(routine, lastSession, seeds);
   if (draft && session.date !== todayISO()) {
     session.date = todayISO();
@@ -367,7 +484,7 @@ async function renderSession(routineId, routeId = state.routeId) {
 
     const weightCell = (s, si) => isBW
       ? `<div style="color: var(--text-dim); font-size: 13px; text-align:center;">BW</div>`
-      : `<div class="input-suffix" data-suffix="${escapeHtml(s.unit || '')}"><input type="number" inputmode="decimal" step="0.5" value="${s.weight ?? ''}" data-ex="${idx}" data-set="${si}" data-field="weight" /></div>`;
+      : `<div class="input-suffix" data-suffix="${escapeHtml(s.unit || '')}"><input type="number" inputmode="decimal" step="0.5" value="${escapeHtml(s.weight ?? '')}" data-ex="${idx}" data-set="${si}" data-field="weight" /></div>`;
 
     const measureCell = (s, si) => {
       if (type === 'distance') {
@@ -376,14 +493,14 @@ async function renderSession(routineId, routeId = state.routeId) {
       if (type === 'duration') {
         return `<div class="input-suffix" data-suffix="time"><input type="text" inputmode="text" value="${escapeHtml(s.duration ?? '')}" placeholder="30s" data-ex="${idx}" data-set="${si}" data-field="duration" /></div>`;
       }
-      return `<div class="input-suffix" data-suffix="reps"><input type="number" inputmode="numeric" step="1" value="${s.reps ?? ''}" data-ex="${idx}" data-set="${si}" data-field="reps" /></div>`;
+      return `<div class="input-suffix" data-suffix="reps"><input type="number" inputmode="numeric" step="1" value="${escapeHtml(s.reps ?? '')}" data-ex="${idx}" data-set="${si}" data-field="reps" /></div>`;
     };
 
     const restCell = (s, si) => {
       const isLastSet = si === ex.sets.length - 1;
       return isLastSet
         ? `<div class="rest-placeholder">—</div>`
-        : `<div class="input-suffix rest" data-suffix="min"><input type="number" inputmode="decimal" step="0.5" min="0" value="${s.restMinutes ?? ''}" data-ex="${idx}" data-set="${si}" data-field="restMinutes" /></div>`;
+        : `<div class="input-suffix rest" data-suffix="min"><input type="number" inputmode="decimal" step="0.5" min="0" value="${escapeHtml(s.restMinutes ?? '')}" data-ex="${idx}" data-set="${si}" data-field="restMinutes" /></div>`;
     };
 
     const setsHtml = ex.sets.map((s, si) => {

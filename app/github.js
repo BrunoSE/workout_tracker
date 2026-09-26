@@ -20,13 +20,13 @@ function b64decode(str) {
   return decodeURIComponent(escape(atob(str.replace(/\s/g, ''))));
 }
 
-// Log filenames are `<date>_<routineId>.json`, with an optional `_tHHMM`
-// suffix when the same routine is logged twice on one day, e.g.
-// `2026-09-24_full_1.json` then `2026-09-24_full_1_t1830.json`.
+// Log filenames are `<date>_<routineId>.json`, with an optional `_tHHMMSS`
+// suffix (plus `_2`, `_3`, …) when the same routine is logged twice on one
+// day, e.g. `2026-09-24_full_1.json` then `2026-09-24_full_1_t183045.json`.
 // The `_t` marker keeps the suffix unambiguous (routine ids themselves
 // contain underscores, e.g. `legh_1`).
 export function parseLogName(name) {
-  const m = /^(\d{4}-\d{2}-\d{2})_(.+?)(?:_t(\d{4}))?\.json$/.exec(name || '');
+  const m = /^(\d{4}-\d{2}-\d{2})_(.+?)(?:_t(\d{4}|\d{6})(?:_\d+)?)?\.json$/.exec(name || '');
   if (!m) return null;
   return { date: m[1], routineId: m[2] };
 }
@@ -171,12 +171,15 @@ export async function loadExerciseSeeds(fallbackSession) {
   }
 }
 
-async function fileSha(url) {
+async function fileInfo(url) {
   try {
     const existing = await fetch(url, { headers: authHeaders() });
-    if (existing.ok) return (await existing.json()).sha;
-  } catch {}
-  return undefined;
+    if (!existing.ok) return null;
+    const data = await existing.json();
+    return { sha: data.sha, content: String(data.content || '').replace(/\s/g, '') };
+  } catch {
+    return null;
+  }
 }
 
 export async function saveSession(session) {
@@ -184,28 +187,51 @@ export async function saveSession(session) {
   const { owner, repo, branch } = getConfig();
   const base = `${session.date}_${session.routineId}.json`;
   const baseUrl = `${API}/repos/${owner}/${repo}/contents/logs/${base}?ref=${encodeURIComponent(branch)}`;
+  const newContent = b64encode(JSON.stringify(session, null, 2) + '\n');
 
   // Second workout of the same routine on the same day gets its own file
-  // instead of silently overwriting the first one.
+  // instead of silently overwriting the first one. A retry of an identical
+  // payload reuses the existing file (same content → same sha update), so
+  // failed uploads stay idempotent instead of duplicating.
   let filename = base;
-  let sha = await fileSha(baseUrl);
-  if (sha) {
-    const stamp = (() => {
-      const d = new Date(session.completedAt || Date.now());
-      const hh = String(d.getHours()).padStart(2, '0');
-      const mm = String(d.getMinutes()).padStart(2, '0');
-      return `t${hh}${mm}`;
-    })();
-    filename = `${session.date}_${session.routineId}_${stamp}.json`;
-    sha = await fileSha(
-      `${API}/repos/${owner}/${repo}/contents/logs/${filename}?ref=${encodeURIComponent(branch)}`
-    );
+  let sha;
+  const baseInfo = await fileInfo(baseUrl);
+  if (!baseInfo) {
+    sha = undefined;
+  } else if (baseInfo.content === newContent) {
+    sha = baseInfo.sha;
+  } else {
+    const d = new Date(session.completedAt || Date.now());
+    const p2 = n => String(n).padStart(2, '0');
+    const stamp = `t${p2(d.getHours())}${p2(d.getMinutes())}${p2(d.getSeconds())}`;
+    let done = false;
+    for (let n = 0; n < 50 && !done; n++) {
+      const candidate = n === 0
+        ? `${session.date}_${session.routineId}_${stamp}.json`
+        : `${session.date}_${session.routineId}_${stamp}_${n + 1}.json`;
+      const info = await fileInfo(
+        `${API}/repos/${owner}/${repo}/contents/logs/${candidate}?ref=${encodeURIComponent(branch)}`
+      );
+      if (!info || info.content === newContent) {
+        filename = candidate;
+        sha = info?.sha;
+        done = true;
+      }
+    }
+    if (!done) {
+      // Practically unreachable (50 same-second saves); overwrite rather
+      // than fail the save.
+      filename = `${session.date}_${session.routineId}_${stamp}_x.json`;
+      sha = (await fileInfo(
+        `${API}/repos/${owner}/${repo}/contents/logs/${filename}?ref=${encodeURIComponent(branch)}`
+      ))?.sha;
+    }
   }
   const url = `${API}/repos/${owner}/${repo}/contents/logs/${filename}`;
 
   const body = {
     message: `log: ${session.routineId} session ${session.date}`,
-    content: b64encode(JSON.stringify(session, null, 2) + '\n'),
+    content: newContent,
     branch,
   };
   if (sha) body.sha = sha;

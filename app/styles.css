@@ -394,3 +394,11 @@ h2.section-title:first-child { margin-top: 4px; }
   text-align: center;
   padding: 40px 16px;
 }
+
+.folder-card .card-title::after {
+  content: "›";
+  float: right;
+  color: var(--text-dim);
+  font-size: 20px;
+  line-height: 1;
+}

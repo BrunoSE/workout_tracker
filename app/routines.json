@@ -124,7 +124,7 @@
           "reps": 12,
           "weight": 20,
           "unit": "lb",
-          "notes": "último angulo fue 9; ir alternando 5, 7, 9"
+          "notes": "\u00faltimo angulo fue 9; ir alternando 5, 7, 9"
         },
         {
           "name": "Crunch",
@@ -694,6 +694,824 @@
           "weight": 13,
           "unit": "lb",
           "notes": "Pressing endurance"
+        }
+      ]
+    },
+    {
+      "id": "tmp_body_part_split_back_biceps",
+      "name": "Back Biceps",
+      "category": "tmp_body_part_split",
+      "source": "temp/body_part_split/back_biceps.md",
+      "exercises": [
+        {
+          "name": "Reverse-grip lat pulldown",
+          "reps": 8
+        },
+        {
+          "name": "Cable seated row",
+          "reps": 10
+        },
+        {
+          "name": "Chest-supported T-bar row",
+          "reps": 12
+        },
+        {
+          "name": "Seated face pull",
+          "reps": 15
+        },
+        {
+          "name": "Dumbbell supinated curl",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_body_part_split_back_biceps_mod",
+      "name": "Back Biceps (Mod)",
+      "category": "tmp_body_part_split",
+      "source": "temp/body_part_split/back_biceps_mod.md",
+      "exercises": [
+        {
+          "name": "Lat pulldown",
+          "reps": 6
+        },
+        {
+          "name": "Dumbbell row",
+          "reps": 12
+        },
+        {
+          "name": "Barbell bent over row",
+          "reps": 12
+        },
+        {
+          "name": "Reverse pec deck",
+          "reps": 15
+        },
+        {
+          "name": "EZ bar curl",
+          "reps": 15
+        }
+      ]
+    },
+    {
+      "id": "tmp_body_part_split_chest_triceps",
+      "name": "Chest Triceps",
+      "category": "tmp_body_part_split",
+      "source": "temp/body_part_split/chest_triceps.md",
+      "exercises": [
+        {
+          "name": "Barbell bench press",
+          "reps": 6
+        },
+        {
+          "name": "Dumbbell incline press",
+          "reps": 8
+        },
+        {
+          "name": "Cable flye",
+          "reps": 12
+        },
+        {
+          "name": "Assisted dip",
+          "reps": 10
+        },
+        {
+          "name": "Dumbbell skull crusher",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_body_part_split_chest_triceps_mod",
+      "name": "Chest Triceps (Mod)",
+      "category": "tmp_body_part_split",
+      "source": "temp/body_part_split/chest_triceps_mod.md",
+      "exercises": [
+        {
+          "name": "Barbell bench press",
+          "reps": 8
+        },
+        {
+          "name": "Machine incline chest press",
+          "reps": 12
+        },
+        {
+          "name": "Pec deck",
+          "reps": 12
+        },
+        {
+          "name": "Assisted dip",
+          "reps": 6
+        },
+        {
+          "name": "Cable tricep kickback",
+          "reps": 15
+        }
+      ]
+    },
+    {
+      "id": "tmp_body_part_split_legs_abs_1",
+      "name": "Legs Abs 1",
+      "category": "tmp_body_part_split",
+      "source": "temp/body_part_split/legs_abs_1.md",
+      "exercises": [
+        {
+          "name": "Back squat",
+          "reps": 6
+        },
+        {
+          "name": "Romanian deadlift",
+          "reps": 8
+        },
+        {
+          "name": "Barbell hip thrust",
+          "reps": 12
+        },
+        {
+          "name": "Leg extension",
+          "reps": 12
+        },
+        {
+          "name": "Leg curl",
+          "reps": 12
+        },
+        {
+          "name": "Standing calf raise",
+          "reps": 8
+        },
+        {
+          "name": "Crunch",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_body_part_split_legs_abs_1_mod",
+      "name": "Legs Abs 1 (Mod)",
+      "category": "tmp_body_part_split",
+      "source": "temp/body_part_split/legs_abs_1_mod.md",
+      "exercises": [
+        {
+          "name": "Deadlift",
+          "reps": 5
+        },
+        {
+          "name": "Goblet squat",
+          "reps": 12
+        },
+        {
+          "name": "Dumbbell single-leg hip thrust",
+          "reps": 10
+        },
+        {
+          "name": "Leg press",
+          "reps": 12
+        },
+        {
+          "name": "Lying leg curl",
+          "reps": 15
+        },
+        {
+          "name": "Standing calf raise",
+          "reps": 8
+        },
+        {
+          "name": "Bicycle crunch",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_body_part_split_legs_abs_2",
+      "name": "Legs Abs 2",
+      "category": "tmp_body_part_split",
+      "source": "temp/body_part_split/legs_abs_2.md",
+      "exercises": [
+        {
+          "name": "Deadlift",
+          "reps": 5
+        },
+        {
+          "name": "Dumbbell walking lunge",
+          "reps": 10
+        },
+        {
+          "name": "Single-leg leg extension",
+          "reps": 15
+        },
+        {
+          "name": "Single-leg lying leg curl",
+          "reps": 15
+        },
+        {
+          "name": "Machine seated hip abduction",
+          "reps": 15
+        },
+        {
+          "name": "Standing calf raise",
+          "reps": 12
+        },
+        {
+          "name": "Plank",
+          "duration": "20s",
+          "bodyweight": true
+        }
+      ]
+    },
+    {
+      "id": "tmp_body_part_split_legs_abs_2_mod",
+      "name": "Legs Abs 2 (Mod)",
+      "category": "tmp_body_part_split",
+      "source": "temp/body_part_split/legs_abs_2_mod.md",
+      "exercises": [
+        {
+          "name": "Back squat",
+          "reps": 8
+        },
+        {
+          "name": "Barbell hip thrust",
+          "reps": 8
+        },
+        {
+          "name": "Romanian deadlift",
+          "reps": 12
+        },
+        {
+          "name": "Seated leg curl",
+          "reps": 8
+        },
+        {
+          "name": "Standing calf raise",
+          "reps": 6
+        },
+        {
+          "name": "Hanging leg raise",
+          "reps": 6
+        },
+        {
+          "name": "Machine seated hip abduction",
+          "reps": 20
+        }
+      ]
+    },
+    {
+      "id": "tmp_body_part_split_shoulders_arms",
+      "name": "Shoulders Arms",
+      "category": "tmp_body_part_split",
+      "source": "temp/body_part_split/shoulders_arms.md",
+      "exercises": [
+        {
+          "name": "Overhead press",
+          "reps": 6
+        },
+        {
+          "name": "Dumbbell lateral raise",
+          "reps": 12
+        },
+        {
+          "name": "Cable reverse flye",
+          "reps": 15
+        },
+        {
+          "name": "Single-arm rope tricep extension",
+          "reps": 12
+        },
+        {
+          "name": "Single-arm cable curl",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_body_part_split_shoulders_arms_mod",
+      "name": "Shoulders Arms (Mod)",
+      "category": "tmp_body_part_split",
+      "source": "temp/body_part_split/shoulders_arms_mod.md",
+      "exercises": [
+        {
+          "name": "Dumbbell seated shoulder press",
+          "reps": 10
+        },
+        {
+          "name": "Cable lateral raise",
+          "reps": 10
+        },
+        {
+          "name": "Bent over reverse dumbbell flye",
+          "reps": 12
+        },
+        {
+          "name": "Dumbbell floor press",
+          "reps": 15
+        },
+        {
+          "name": "Hammer curl",
+          "reps": 8
+        }
+      ]
+    },
+    {
+      "id": "tmp_full_body_full_1",
+      "name": "Full Body 1",
+      "category": "tmp_full_body",
+      "source": "temp/full_body/full_1.md",
+      "exercises": [
+        {
+          "name": "Back squat",
+          "reps": 6
+        },
+        {
+          "name": "Barbell bench press",
+          "reps": 8
+        },
+        {
+          "name": "Lat pulldown",
+          "reps": 10
+        },
+        {
+          "name": "Romanian deadlift",
+          "reps": 10
+        },
+        {
+          "name": "Assisted dip",
+          "reps": 8
+        },
+        {
+          "name": "Standing calf raise",
+          "reps": 10
+        },
+        {
+          "name": "Dumbbell supinated curl",
+          "reps": 10
+        }
+      ]
+    },
+    {
+      "id": "tmp_full_body_full_1_mod",
+      "name": "Full Body 1 (Mod)",
+      "category": "tmp_full_body",
+      "source": "temp/full_body/full_1_mod.md",
+      "exercises": [
+        {
+          "name": "Back squat",
+          "reps": 8
+        },
+        {
+          "name": "Dumbbell seated shoulder press",
+          "reps": 10
+        },
+        {
+          "name": "Single-arm pulldown",
+          "reps": 12
+        },
+        {
+          "name": "Barbell hip thrust",
+          "reps": 8
+        },
+        {
+          "name": "Pec deck",
+          "reps": 15
+        },
+        {
+          "name": "Reverse pec deck",
+          "reps": 15
+        },
+        {
+          "name": "Cable lateral raise",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_full_body_full_2",
+      "name": "Full Body 2",
+      "category": "tmp_full_body",
+      "source": "temp/full_body/full_2.md",
+      "exercises": [
+        {
+          "name": "Deadlift",
+          "reps": 5
+        },
+        {
+          "name": "Overhead press",
+          "reps": 8
+        },
+        {
+          "name": "Chest-supported T-bar row",
+          "reps": 12
+        },
+        {
+          "name": "Leg extension",
+          "reps": 12
+        },
+        {
+          "name": "Cable flye",
+          "reps": 12
+        },
+        {
+          "name": "Crunch",
+          "reps": 12
+        },
+        {
+          "name": "Dumbbell skull crusher",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_full_body_full_2_mod",
+      "name": "Full Body 2 (Mod)",
+      "category": "tmp_full_body",
+      "source": "temp/full_body/full_2_mod.md",
+      "exercises": [
+        {
+          "name": "Deadlift",
+          "reps": 3
+        },
+        {
+          "name": "Close-grip bench press",
+          "reps": 5
+        },
+        {
+          "name": "Dumbbell row",
+          "reps": 12
+        },
+        {
+          "name": "Dumbbell walking lunge",
+          "reps": 12
+        },
+        {
+          "name": "Assisted dip",
+          "reps": 12
+        },
+        {
+          "name": "Bicycle crunch",
+          "reps": 10
+        },
+        {
+          "name": "Single-arm cable curl",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_full_body_full_3",
+      "name": "Full Body 3",
+      "category": "tmp_full_body",
+      "source": "temp/full_body/full_3.md",
+      "exercises": [
+        {
+          "name": "Dumbbell walking lunge",
+          "reps": 10
+        },
+        {
+          "name": "Dumbbell incline press",
+          "reps": 8
+        },
+        {
+          "name": "Reverse grip lat pulldown",
+          "reps": 10
+        },
+        {
+          "name": "Barbell hip thrust",
+          "reps": 12
+        },
+        {
+          "name": "Seated face pull",
+          "reps": 12
+        },
+        {
+          "name": "Dumbbell lateral raise",
+          "reps": 10
+        },
+        {
+          "name": "Lying leg curl",
+          "reps": 10
+        }
+      ]
+    },
+    {
+      "id": "tmp_full_body_full_3_mod",
+      "name": "Full Body 3 (Mod)",
+      "category": "tmp_full_body",
+      "source": "temp/full_body/full_3_mod.md",
+      "exercises": [
+        {
+          "name": "Back squat",
+          "reps": 5
+        },
+        {
+          "name": "Barbell bench press",
+          "reps": 10
+        },
+        {
+          "name": "Neutral-grip pulldown",
+          "reps": 15
+        },
+        {
+          "name": "Lying leg curl",
+          "reps": 12
+        },
+        {
+          "name": "Seated face pull",
+          "reps": 15
+        },
+        {
+          "name": "Single-arm rope tricep extension",
+          "reps": 12
+        },
+        {
+          "name": "Standing calf raise",
+          "reps": 10
+        }
+      ]
+    },
+    {
+      "id": "tmp_upper_lower_lower_1",
+      "name": "Lower 1",
+      "category": "tmp_upper_lower",
+      "source": "temp/upper_lower/lower_1.md",
+      "exercises": [
+        {
+          "name": "Back squat",
+          "reps": 6
+        },
+        {
+          "name": "Romanian deadlift",
+          "reps": 10
+        },
+        {
+          "name": "Barbell hip thrust",
+          "reps": 12
+        },
+        {
+          "name": "Leg extension",
+          "reps": 12
+        },
+        {
+          "name": "Lying leg curl",
+          "reps": 12
+        },
+        {
+          "name": "Machine seated hip abduction",
+          "reps": 6
+        },
+        {
+          "name": "Crunch",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_upper_lower_lower_1_mod",
+      "name": "Lower 1 (Mod)",
+      "category": "tmp_upper_lower",
+      "source": "temp/upper_lower/lower_1_mod.md",
+      "exercises": [
+        {
+          "name": "Deadlift",
+          "reps": 5
+        },
+        {
+          "name": "Goblet squat",
+          "reps": 12
+        },
+        {
+          "name": "Dumbbell single-leg hip thrust",
+          "reps": 10
+        },
+        {
+          "name": "Leg press",
+          "reps": 12
+        },
+        {
+          "name": "Lying leg curl",
+          "reps": 15
+        },
+        {
+          "name": "Standing calf raise",
+          "reps": 8
+        },
+        {
+          "name": "Bicycle crunch",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_upper_lower_lower_2",
+      "name": "Lower 2",
+      "category": "tmp_upper_lower",
+      "source": "temp/upper_lower/lower_2.md",
+      "exercises": [
+        {
+          "name": "Deadlift",
+          "reps": 8
+        },
+        {
+          "name": "Dumbbell walking lunge",
+          "reps": 10
+        },
+        {
+          "name": "Single-leg leg extension",
+          "reps": 15
+        },
+        {
+          "name": "Single-leg lying leg curl",
+          "reps": 15
+        },
+        {
+          "name": "Machine seated hip abduction",
+          "reps": 15
+        },
+        {
+          "name": "Standing calf raise",
+          "reps": 12
+        },
+        {
+          "name": "Plank",
+          "duration": "20s",
+          "bodyweight": true
+        }
+      ]
+    },
+    {
+      "id": "tmp_upper_lower_lower_2_mod",
+      "name": "Lower 2 (Mod)",
+      "category": "tmp_upper_lower",
+      "source": "temp/upper_lower/lower_2_mod.md",
+      "exercises": [
+        {
+          "name": "Back squat",
+          "reps": 8
+        },
+        {
+          "name": "Barbell hip thrust",
+          "reps": 8
+        },
+        {
+          "name": "Romanian deadlift",
+          "reps": 12
+        },
+        {
+          "name": "Seated leg curl",
+          "reps": 8
+        },
+        {
+          "name": "Standing calf raise",
+          "reps": 6
+        },
+        {
+          "name": "Hanging leg raise",
+          "reps": 6
+        },
+        {
+          "name": "Machine seated hip abduction",
+          "reps": 20
+        }
+      ]
+    },
+    {
+      "id": "tmp_upper_lower_upper_1",
+      "name": "Upper 1",
+      "category": "tmp_upper_lower",
+      "source": "temp/upper_lower/upper_1.md",
+      "exercises": [
+        {
+          "name": "Barbell bench press",
+          "reps": 5
+        },
+        {
+          "name": "Lat pulldown",
+          "reps": 10
+        },
+        {
+          "name": "Overhead press",
+          "reps": 10
+        },
+        {
+          "name": "Chest-supported T-bar row",
+          "reps": 12
+        },
+        {
+          "name": "Cable flye",
+          "reps": 12
+        },
+        {
+          "name": "Dumbbell supinated curl",
+          "reps": 10
+        },
+        {
+          "name": "Single-arm rope tricep extension",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_upper_lower_upper_1_mod",
+      "name": "Upper 1 (Mod)",
+      "category": "tmp_upper_lower",
+      "source": "temp/upper_lower/upper_1_mod.md",
+      "exercises": [
+        {
+          "name": "Barbell bench press",
+          "reps": 8
+        },
+        {
+          "name": "Single-arm pulldown",
+          "reps": 8
+        },
+        {
+          "name": "Dumbbell seated shoulder press",
+          "reps": 12
+        },
+        {
+          "name": "Dumbbell row",
+          "reps": 12
+        },
+        {
+          "name": "Assisted dip",
+          "reps": 6
+        },
+        {
+          "name": "Seated face pull",
+          "reps": 15
+        },
+        {
+          "name": "EZ bar curl",
+          "reps": 12
+        }
+      ]
+    },
+    {
+      "id": "tmp_upper_lower_upper_2",
+      "name": "Upper 2",
+      "category": "tmp_upper_lower",
+      "source": "temp/upper_lower/upper_2.md",
+      "exercises": [
+        {
+          "name": "Dumbbell incline press",
+          "reps": 8
+        },
+        {
+          "name": "Reverse-grip lat pulldown",
+          "reps": 8
+        },
+        {
+          "name": "Assisted dip",
+          "reps": 10
+        },
+        {
+          "name": "Barbell bent over row",
+          "reps": 12
+        },
+        {
+          "name": "Dumbbell lateral raise",
+          "reps": 15
+        },
+        {
+          "name": "Seated face pull",
+          "reps": 15
+        },
+        {
+          "name": "Hammer curl",
+          "reps": 8
+        }
+      ]
+    },
+    {
+      "id": "tmp_upper_lower_upper_2_mod",
+      "name": "Upper 2 (Mod)",
+      "category": "tmp_upper_lower",
+      "source": "temp/upper_lower/upper_2_mod.md",
+      "exercises": [
+        {
+          "name": "Overhead press",
+          "reps": 6
+        },
+        {
+          "name": "Neutral-grip pulldown",
+          "reps": 6
+        },
+        {
+          "name": "Dumbbell incline press",
+          "reps": 8
+        },
+        {
+          "name": "Cable seated row",
+          "reps": 8
+        },
+        {
+          "name": "Cable lateral raise",
+          "reps": 12
+        },
+        {
+          "name": "Reverse pec deck",
+          "reps": 12
+        },
+        {
+          "name": "Single-arm cable curl",
+          "reps": 15
         }
       ]
     }
