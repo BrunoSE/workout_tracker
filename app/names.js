@@ -17,7 +17,6 @@ const ALIAS_GROUPS = {
   'dead hang': ['dead hang (max)'],
   'overhead press': ['overhead press (standing)'],
   'dumbbell incline press': ['inclined dumbbell press'],
-  'lying leg curl': ['leg curl'],
 };
 
 const VARIANT_TO_CANONICAL = new Map();
