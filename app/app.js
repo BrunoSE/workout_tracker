@@ -10,7 +10,7 @@ import {
 } from './github.js';
 import { canonicalExerciseName } from './names.js';
 
-const APP_VERSION = 'v19';
+const APP_VERSION = 'v20';
 
 const state = {
   routines: null,
@@ -179,6 +179,16 @@ function bindFolderCards(root = app) {
   });
 }
 
+// Fill last-session state from localStorage cache without clobbering
+// fresher network data already in state (avoids transient stale subtitles).
+function primeLastSessionsFromCache(routines) {
+  for (const r of routines) {
+    if (state.lastSessions[r.id]) continue;
+    const cached = getCachedHistory(r.id);
+    if (cached) state.lastSessions[r.id] = cached;
+  }
+}
+
 async function refreshLastSessions(routeId, rerender) {
   if (!hasSyncConfig() || !navigator.onLine) return;
   try {
@@ -233,15 +243,11 @@ async function renderHome(routeId = state.routeId) {
     pendingBanner += `<div class="status-banner">Configure GitHub sync to save history across devices. <a href="#/settings" style="color:var(--accent)">Open settings →</a></div>`;
   }
 
-  for (const r of routines) {
-    const cached = getCachedHistory(r.id);
-    if (cached) state.lastSessions[r.id] = cached;
-  }
+  primeLastSessionsFromCache(routines);
 
   const render = () => {
     if (routeId !== state.routeId) return;
-    const legs  = routines.filter(r => r.id.startsWith('leg_')).sort((a, b) => a.id.localeCompare(b.id));
-    const arms  = routines.filter(r => r.id.startsWith('arm_')).sort((a, b) => a.id.localeCompare(b.id));
+    const legs  = routines.filter(r => r.id.startsWith('leg_')).sort((a, b) => a.id.localeCompare(b.id));    const arms  = routines.filter(r => r.id.startsWith('arm_')).sort((a, b) => a.id.localeCompare(b.id));
     const full  = routines.filter(r => r.id.startsWith('full_')).sort((a, b) => a.id.localeCompare(b.id));
 
     const section = (title, list) => list.length
@@ -290,10 +296,7 @@ async function renderFolder(folder, routeId = state.routeId) {
   const routines = await loadRoutines();
   if (routeId !== state.routeId) return;
 
-  for (const r of routines) {
-    const cached = getCachedHistory(r.id);
-    if (cached) state.lastSessions[r.id] = cached;
-  }
+  primeLastSessionsFromCache(routines);
 
   const render = () => {
     if (routeId !== state.routeId) return;

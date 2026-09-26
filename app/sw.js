@@ -1,4 +1,4 @@
-const VERSION = 'wt-v19';
+const VERSION = 'wt-v20';
 const APP_SHELL = [
   './',
   './index.html',
@@ -15,7 +15,20 @@ const APP_SHELL = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(VERSION).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting())
+    caches.open(VERSION).then(async cache => {
+      // Cache per asset, not all-or-nothing: one 404 must not fail the
+      // whole install and leave the previous SW (or none) in place.
+      await Promise.all(APP_SHELL.map(async url => {
+        try {
+          const res = await fetch(url);
+          if (res.ok) await cache.put(url, res);
+          else console.warn('SW install: skipping', url, res.status);
+        } catch (err) {
+          console.warn('SW install: skipping', url, err);
+        }
+      }));
+      await self.skipWaiting();
+    })
   );
 });
 
