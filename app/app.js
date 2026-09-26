@@ -9,9 +9,12 @@ import {
   saveSession, testAuth,
 } from './github.js';
 
+const APP_VERSION = 'v12';
+
 const state = {
   routines: null,
   lastSessions: {},
+  routeId: 0,
 };
 
 const app = document.getElementById('app');
@@ -40,14 +43,29 @@ function todayISO() {
   return `${y}-${m}-${dd}`;
 }
 
+function parseLocalDate(iso) {
+  if (!iso) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
+  const dt = new Date(iso);
+  return Number.isNaN(dt.getTime()) ? null : dt;
+}
+
+function startOfLocalDay(d = new Date()) {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
 function humanDate(iso) {
   if (!iso) return 'never';
-  const then = new Date(iso);
-  const now = new Date();
-  const diffDays = Math.floor((now - then) / 86400000);
+  const then = parseLocalDate(iso);
+  if (!then) return iso;
+  const diffDays = Math.round((startOfLocalDay() - startOfLocalDay(then)) / 86400000);
   if (diffDays === 0) return 'today';
   if (diffDays === 1) return 'yesterday';
-  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays > 1 && diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 0) return iso;
   return iso;
 }
 
@@ -77,16 +95,17 @@ function applyTheme(theme) {
 }
 
 async function route() {
+  const routeId = ++state.routeId;
   const hash = location.hash || '#/';
   const parts = hash.replace(/^#\//, '').split('/');
   backBtn.classList.toggle('hidden', parts[0] === '' || parts[0] === undefined);
   if (parts[0] === '' || parts[0] === undefined) {
     backBtn.classList.add('hidden');
     applyTheme('default');
-    await renderHome();
+    await renderHome(routeId);
   } else if (parts[0] === 'session' && parts[1]) {
     applyTheme(themeFromRoutineId(parts[1]));
-    await renderSession(parts[1]);
+    await renderSession(parts[1], routeId);
   } else if (parts[0] === 'settings') {
     applyTheme('default');
     renderSettings();
@@ -95,10 +114,11 @@ async function route() {
   }
 }
 
-async function renderHome() {
+async function renderHome(routeId = state.routeId) {
   screenTitle.textContent = 'Workouts';
   app.innerHTML = '<div class="empty-hint">Loading…</div>';
   const routines = await loadRoutines();
+  if (routeId !== state.routeId) return;
 
   const pending = getPending();
   let pendingBanner = '';
@@ -116,6 +136,7 @@ async function renderHome() {
   }
 
   const render = () => {
+    if (routeId !== state.routeId) return;
     const hyrox = routines.filter(r => r.category === 'hyrox').sort((a, b) => a.id.localeCompare(b.id));
     const legs  = routines.filter(r => r.id.startsWith('leg_')).sort((a, b) => a.id.localeCompare(b.id));
     const arms  = routines.filter(r => r.id.startsWith('arm_')).sort((a, b) => a.id.localeCompare(b.id));
@@ -159,6 +180,7 @@ async function renderHome() {
   if (hasSyncConfig() && navigator.onLine) {
     try {
       const sessions = await loadAllLastSessions();
+      if (routeId !== state.routeId) return;
       state.lastSessions = { ...state.lastSessions, ...sessions };
       render();
     } catch (err) {
@@ -194,7 +216,7 @@ function buildInitialSession(routine, lastSession) {
           sets = prev.sets.slice(0, setCount).map((s, i) => ({
             weight: s.weight, unit: s.unit, reps: s.reps,
             warmup: !!s.warmup,
-            restMinutes: i < setCount - 1 ? (s.restMinutes ?? 1.5) : null,
+            restMinutes: i < setCount - 1 ? (s.restMinutes ?? 2) : null,
             done: false,
           }));
           while (sets.length < setCount) {
@@ -203,7 +225,7 @@ function buildInitialSession(routine, lastSession) {
             sets.push({
               weight: last?.weight ?? ex.weight, unit: last?.unit ?? ex.unit, reps: last?.reps ?? ex.reps,
               warmup: false,
-              restMinutes: i < setCount - 1 ? 1.5 : null,
+              restMinutes: i < setCount - 1 ? 2 : null,
               done: false,
             });
           }
@@ -215,7 +237,7 @@ function buildInitialSession(routine, lastSession) {
             unit: ex.unit,
             reps: ex.reps,
             warmup: !!warmup[i],
-            restMinutes: i < setCount - 1 ? 1.5 : null,
+            restMinutes: i < setCount - 1 ? 2 : null,
             done: false,
           }));
         }
@@ -226,7 +248,7 @@ function buildInitialSession(routine, lastSession) {
           distance: prev?.sets?.[i]?.distance ?? seedDistance,
           weight: ex.bodyweight ? null : (prev?.sets?.[i]?.weight ?? seedWeight),
           unit: ex.unit,
-          restMinutes: i < setCount - 1 ? (prev?.sets?.[i]?.restMinutes ?? 1.5) : null,
+          restMinutes: i < setCount - 1 ? (prev?.sets?.[i]?.restMinutes ?? 2) : null,
           done: false,
         }));
       } else { // duration
@@ -236,7 +258,7 @@ function buildInitialSession(routine, lastSession) {
           duration: prev?.sets?.[i]?.duration ?? seedDuration,
           weight: ex.bodyweight ? null : (prev?.sets?.[i]?.weight ?? seedWeight),
           unit: ex.unit,
-          restMinutes: i < setCount - 1 ? (prev?.sets?.[i]?.restMinutes ?? 1.5) : null,
+          restMinutes: i < setCount - 1 ? (prev?.sets?.[i]?.restMinutes ?? 2) : null,
           done: false,
         }));
       }
@@ -259,11 +281,12 @@ function buildInitialSession(routine, lastSession) {
   };
 }
 
-async function renderSession(routineId) {
+async function renderSession(routineId, routeId = state.routeId) {
   screenTitle.textContent = 'Session';
   app.innerHTML = '<div class="empty-hint">Loading…</div>';
 
   const routines = await loadRoutines();
+  if (routeId !== state.routeId) return;
   const routine = getRoutine(routineId);
   if (!routine) { location.hash = '#/'; return; }
 
@@ -273,9 +296,14 @@ async function renderSession(routineId) {
   if (hasSyncConfig() && navigator.onLine && !lastSession) {
     try { lastSession = await loadLastSessionForRoutine(routineId); } catch {}
   }
+  if (routeId !== state.routeId) return;
 
   const draft = getDraft(routineId);
   const session = draft || buildInitialSession(routine, lastSession);
+  if (draft && session.date !== todayISO()) {
+    session.date = todayISO();
+    saveDraft(session);
+  }
 
   const container = document.createElement('div');
 
@@ -364,12 +392,12 @@ async function renderSession(routineId) {
       </div>`;
   }
 
-  const lastDateIso = lastSession?.completedAt || (lastSession?.date ? `${lastSession.date}T00:00:00` : null);
+  const lastDate = parseLocalDate(lastSession?.date) || parseLocalDate(lastSession?.completedAt);
   let lastBanner;
-  if (!lastDateIso) {
+  if (!lastDate) {
     lastBanner = `<div class="last-workout-banner"><span class="label">Last ${routine.name}:</span> <span class="value na">N/A</span></div>`;
   } else {
-    const days = Math.max(0, Math.floor((Date.now() - new Date(lastDateIso).getTime()) / 86400000));
+    const days = Math.max(0, Math.round((startOfLocalDay() - startOfLocalDay(lastDate)) / 86400000));
     const phrase = days === 0 ? 'today' : days === 1 ? '1 day ago' : `${days} days ago`;
     lastBanner = `<div class="last-workout-banner"><span class="label">Last ${routine.name}:</span> <span class="value">${phrase}</span> <span class="date-aside">(${lastSession.date})</span></div>`;
   }
@@ -388,28 +416,42 @@ async function renderSession(routineId) {
 
   const persist = () => saveDraft(session);
 
-  container.addEventListener('input', e => {
-    const t = e.target;
+  function applyField(t) {
     const exIdx = t.dataset.ex;
-    if (exIdx == null) return;
+    if (exIdx == null) return false;
     const ex = session.exercises[+exIdx];
+    if (!ex) return false;
     if (t.dataset.set != null) {
       const set = ex.sets[+t.dataset.set];
+      if (!set) return false;
       const field = t.dataset.field;
-      if (field === 'done') set.done = t.checked;
-      else if (field === 'weight') set.weight = t.value === '' ? null : Number(t.value);
-      else if (field === 'reps') set.reps = t.value === '' ? null : Number(t.value);
-      else if (field === 'restMinutes') set.restMinutes = t.value === '' ? null : Number(t.value);
-      else if (field === 'distance') set.distance = t.value === '' ? null : t.value;
+      if (field === 'done') set.done = !!t.checked;
+      else if (field === 'weight') {
+        const n = Number(t.value);
+        set.weight = t.value === '' || Number.isNaN(n) ? null : n;
+      } else if (field === 'reps') {
+        const n = Number(t.value);
+        set.reps = t.value === '' || Number.isNaN(n) ? null : n;
+      } else if (field === 'restMinutes') {
+        const n = Number(t.value);
+        set.restMinutes = t.value === '' || Number.isNaN(n) ? null : n;
+      } else if (field === 'distance') set.distance = t.value === '' ? null : t.value;
       else if (field === 'duration') set.duration = t.value === '' ? null : t.value;
+      else return false;
     } else if (t.dataset.field === 'notes') {
       ex.notes = t.value;
+    } else {
+      return false;
     }
-    persist();
+    return true;
+  }
+
+  container.addEventListener('input', e => {
+    if (applyField(e.target)) persist();
   });
 
   container.addEventListener('change', e => {
-    if (e.target.classList.contains('set-done')) persist();
+    if (applyField(e.target)) persist();
   });
 
   document.getElementById('discard-btn').addEventListener('click', () => {
@@ -491,7 +533,7 @@ async function flushPending() {
   setPending(remaining);
   if (remaining.length < list.length) {
     toast(`Synced ${list.length - remaining.length} session(s)`, 'ok');
-    if (location.hash === '#/' || location.hash === '') renderHome();
+    if (location.hash === '#/' || location.hash === '') renderHome(state.routeId);
   }
 }
 
@@ -522,6 +564,7 @@ function renderSettings() {
     </div>
     <button class="primary-btn" id="save-cfg">Save settings</button>
     <button class="secondary-btn" id="test-cfg">Test connection</button>
+    <div class="app-version">App version ${APP_VERSION}</div>
   `;
 
   document.getElementById('save-cfg').addEventListener('click', () => {

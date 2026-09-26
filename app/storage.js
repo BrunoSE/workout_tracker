@@ -30,14 +30,20 @@ export function hasSyncConfig() {
   return !!(c.pat && c.owner && c.repo);
 }
 
-export function getDraft(routineId) {
-  const raw = localStorage.getItem(KEY.draft);
-  if (!raw) return null;
+function readJSON(key, fallback) {
+  const raw = localStorage.getItem(key);
+  if (!raw) return fallback;
   try {
-    const d = JSON.parse(raw);
-    if (d.routineId !== routineId) return null;
-    return d;
-  } catch { return null; }
+    return JSON.parse(raw);
+  } catch {
+    return fallback;
+  }
+}
+
+export function getDraft(routineId) {
+  const d = readJSON(KEY.draft, null);
+  if (!d || d.routineId !== routineId) return null;
+  return d;
 }
 
 export function saveDraft(draft) {
@@ -49,24 +55,21 @@ export function clearDraft() {
 }
 
 export function getCachedHistory(routineId) {
-  const raw = localStorage.getItem(KEY.history);
-  if (!raw) return null;
-  try {
-    const all = JSON.parse(raw);
-    return all[routineId] || null;
-  } catch { return null; }
+  const all = readJSON(KEY.history, null);
+  if (!all || typeof all !== 'object') return null;
+  return all[routineId] || null;
 }
 
 export function setCachedHistory(routineId, session) {
-  const raw = localStorage.getItem(KEY.history);
-  const all = raw ? JSON.parse(raw) : {};
-  all[routineId] = session;
-  localStorage.setItem(KEY.history, JSON.stringify(all));
+  const all = readJSON(KEY.history, {});
+  const next = all && typeof all === 'object' && !Array.isArray(all) ? all : {};
+  next[routineId] = session;
+  localStorage.setItem(KEY.history, JSON.stringify(next));
 }
 
 export function getPending() {
-  const raw = localStorage.getItem(KEY.pending);
-  return raw ? JSON.parse(raw) : [];
+  const list = readJSON(KEY.pending, []);
+  return Array.isArray(list) ? list : [];
 }
 
 export function addPending(session) {
@@ -76,7 +79,7 @@ export function addPending(session) {
 }
 
 export function setPending(list) {
-  localStorage.setItem(KEY.pending, JSON.stringify(list));
+  localStorage.setItem(KEY.pending, JSON.stringify(Array.isArray(list) ? list : []));
 }
 
 export function markSynced() {
