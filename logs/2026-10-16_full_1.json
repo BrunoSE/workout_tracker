@@ -1,0 +1,233 @@
+{
+  "date": "2026-10-16",
+  "routineId": "full_1",
+  "routineName": "Full Body 1",
+  "startedAt": "2026-10-16T22:06:52.052Z",
+  "completedAt": "2026-10-16T23:09:57.644Z",
+  "exercises": [
+    {
+      "name": "Squat barbell",
+      "target": {
+        "reps": 6,
+        "weight": 65,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 6,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 60,
+          "unit": "lb",
+          "reps": 6,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 70,
+          "unit": "lb",
+          "reps": 6,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Bench press",
+      "target": {
+        "reps": 8,
+        "weight": 40,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 5,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 5,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 45,
+          "unit": "lb",
+          "reps": 5,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Lat pulldown",
+      "target": {
+        "reps": 10,
+        "weight": 110,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 120,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 120,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 120,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Romanian deadlift",
+      "target": {
+        "reps": 10,
+        "weight": 45,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Dumbbell press",
+      "target": {
+        "reps": 8,
+        "weight": 35,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 8,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 8,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 8,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Calf raises",
+      "target": {
+        "reps": 10,
+        "weight": 5,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 35,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    },
+    {
+      "name": "Dumbbell supinated curl",
+      "target": {
+        "reps": 10,
+        "weight": 20,
+        "unit": "lb",
+        "bodyweight": false
+      },
+      "notes": "",
+      "sets": [
+        {
+          "weight": 20,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 25,
+          "unit": "lb",
+          "reps": 10,
+          "restMinutes": 1.5,
+          "done": true
+        },
+        {
+          "weight": 25,
+          "unit": "lb",
+          "reps": 10,
+          "done": true
+        }
+      ]
+    }
+  ]
+}
