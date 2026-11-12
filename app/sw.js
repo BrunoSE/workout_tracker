@@ -1,4 +1,4 @@
-const VERSION = 'wt-v21';
+const VERSION = 'wt-v22';
 const APP_SHELL = [
   './',
   './index.html',
@@ -20,7 +20,9 @@ self.addEventListener('install', event => {
       // whole install and leave the previous SW (or none) in place.
       await Promise.all(APP_SHELL.map(async url => {
         try {
-          const res = await fetch(url);
+          // 'reload' skips the HTTP cache (GitHub Pages serves max-age=600),
+          // so a new version never pins a stale copy of a file.
+          const res = await fetch(url, { cache: 'reload' });
           if (res.ok) await cache.put(url, res);
           else console.warn('SW install: skipping', url, res.status);
         } catch (err) {
@@ -55,10 +57,13 @@ self.addEventListener('fetch', event => {
   if (url.pathname.endsWith('/routines.json')) {
     event.respondWith(
       fetch(req).then(res => {
+        // Never let an error page (404/5xx) replace the good cached copy —
+        // the app would then fail to start offline.
+        if (!res.ok) return caches.match(req).then(cached => cached || res);
         const copy = res.clone();
-        caches.open(VERSION).then(c => c.put(req, copy));
+        event.waitUntil(caches.open(VERSION).then(c => c.put(req, copy)));
         return res;
-      }).catch(() => caches.match(req))
+      }).catch(() => caches.match(req).then(cached => cached || Response.error()))
     );
     return;
   }

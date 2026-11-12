@@ -12,6 +12,35 @@ function authHeaders() {
   };
 }
 
+// All GitHub calls go through here:
+// - `cache: 'no-store'`: the API answers GETs with `max-age=60`, so the
+//   browser would otherwise hand back a minute-old listing/file right after
+//   a save (the just-saved session "disappears" and stale data is cached).
+// - timeout: on gym "lie-fi" a fetch can hang for minutes while
+//   navigator.onLine stays true; fail fast so callers fall back to the
+//   local cache / pending queue instead of a stuck "Loading…"/"Saving…".
+const READ_TIMEOUT_MS = 8000;
+const WRITE_TIMEOUT_MS = 20000;
+
+async function ghFetch(url, { method = 'GET', headers, body } = {}) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(
+    () => ctrl.abort(),
+    method === 'GET' ? READ_TIMEOUT_MS : WRITE_TIMEOUT_MS
+  );
+  try {
+    return await fetch(url, {
+      method,
+      headers: { ...authHeaders(), ...(headers || {}) },
+      body,
+      cache: 'no-store',
+      signal: ctrl.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function b64encode(str) {
   return btoa(unescape(encodeURIComponent(str)));
 }
@@ -35,7 +64,7 @@ export async function listLogs() {
   if (!hasSyncConfig()) return [];
   const { owner, repo, branch } = getConfig();
   const url = `${API}/repos/${owner}/${repo}/contents/logs?ref=${encodeURIComponent(branch)}`;
-  const res = await fetch(url, { headers: authHeaders() });
+  const res = await ghFetch(url);
   if (res.status === 404) return [];
   if (!res.ok) throw new Error(`listLogs ${res.status}: ${await res.text()}`);
   const data = await res.json();
@@ -45,7 +74,7 @@ export async function listLogs() {
 export async function fetchLog(path) {
   const { owner, repo, branch } = getConfig();
   const url = `${API}/repos/${owner}/${repo}/contents/${path}?ref=${encodeURIComponent(branch)}`;
-  const res = await fetch(url, { headers: authHeaders() });
+  const res = await ghFetch(url);
   if (!res.ok) throw new Error(`fetchLog ${res.status}`);
   const data = await res.json();
   return JSON.parse(b64decode(data.content));
@@ -185,7 +214,7 @@ export async function loadExerciseSeeds(fallbackSession) {
 
 async function fileInfo(url) {
   try {
-    const existing = await fetch(url, { headers: authHeaders() });
+    const existing = await ghFetch(url);
     if (!existing.ok) return null;
     const data = await existing.json();
     return { sha: data.sha, content: String(data.content || '').replace(/\s/g, '') };
@@ -248,9 +277,9 @@ export async function saveSession(session) {
   };
   if (sha) body.sha = sha;
 
-  const res = await fetch(url, {
+  const res = await ghFetch(url, {
     method: 'PUT',
-    headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
   if (!res.ok) throw new Error(`saveSession ${res.status}: ${await res.text()}`);
@@ -260,7 +289,7 @@ export async function saveSession(session) {
 export async function testAuth() {
   if (!hasSyncConfig()) throw new Error('Missing PAT / owner / repo');
   const { owner, repo } = getConfig();
-  const res = await fetch(`${API}/repos/${owner}/${repo}`, { headers: authHeaders() });
+  const res = await ghFetch(`${API}/repos/${owner}/${repo}`);
   if (!res.ok) throw new Error(`Auth test failed ${res.status}`);
   return res.json();
 }

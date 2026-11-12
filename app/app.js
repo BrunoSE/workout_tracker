@@ -10,7 +10,7 @@ import {
 } from './github.js';
 import { canonicalExerciseName } from './names.js';
 
-const APP_VERSION = 'v21';
+const APP_VERSION = 'v22';
 
 const state = {
   routines: null,
@@ -33,6 +33,11 @@ backBtn.addEventListener('click', () => {
 settingsBtn.addEventListener('click', () => { location.hash = '#/settings'; });
 window.addEventListener('hashchange', route);
 window.addEventListener('online', flushPending);
+// A save that failed on a flaky-but-"online" connection never gets an
+// `online` event, so also retry whenever the app comes back to the front.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') flushPending();
+});
 
 let toastTimer = 0;
 
@@ -93,7 +98,9 @@ function humanDate(iso) {
 async function loadRoutines() {
   if (state.routines) return state.routines;
   const res = await fetch('./routines.json', { cache: 'no-cache' });
+  if (!res.ok) throw new Error(`routines.json ${res.status}`);
   const data = await res.json();
+  if (!Array.isArray(data?.routines)) throw new Error('routines.json malformed');
   state.routines = data.routines;
   return data.routines;
 }
@@ -134,14 +141,16 @@ function folderMeta(key) {
 
 function routineCard(r) {
   const last = state.lastSessions[r.id];
+  // `last` comes from a log file / cache: tolerate a malformed one rather
+  // than crashing the whole home screen.
   const sub = last
-    ? `Last: ${humanDate(last.date)} · ${last.exercises.length} exercises`
+    ? `Last: ${humanDate(last.date)} · ${Array.isArray(last.exercises) ? last.exercises.length : 0} exercises`
     : `${r.exercises.length} exercises`;
   const theme = themeFromRoutineId(r.id);
   return `
     <button class="card" data-theme="${theme}" data-routine="${r.id}">
       <div class="card-title">${escapeHtml(r.name)}</div>
-      <div class="card-sub">${sub}</div>
+      <div class="card-sub">${escapeHtml(sub)}</div>
     </button>`;
 }
 
@@ -203,6 +212,17 @@ async function refreshLastSessions(routeId, rerender) {
 
 async function route() {
   const routeId = ++state.routeId;
+  try {
+    await renderRoute(routeId);
+  } catch (err) {
+    // e.g. routines.json unreachable — show it instead of an endless "Loading…".
+    console.error(err);
+    if (routeId !== state.routeId) return;
+    app.innerHTML = '<div class="empty-hint">Couldn’t load this screen. Check your connection and reopen the app.</div>';
+  }
+}
+
+async function renderRoute(routeId) {
   const hash = location.hash || '#/';
   const parts = hash.replace(/^#\//, '').split('/');
   backBtn.classList.toggle('hidden', parts[0] === '' || parts[0] === undefined);
@@ -247,7 +267,8 @@ async function renderHome(routeId = state.routeId) {
 
   const render = () => {
     if (routeId !== state.routeId) return;
-    const legs  = routines.filter(r => r.id.startsWith('leg_')).sort((a, b) => a.id.localeCompare(b.id));    const arms  = routines.filter(r => r.id.startsWith('arm_')).sort((a, b) => a.id.localeCompare(b.id));
+    const legs  = routines.filter(r => r.id.startsWith('leg_')).sort((a, b) => a.id.localeCompare(b.id));
+    const arms  = routines.filter(r => r.id.startsWith('arm_')).sort((a, b) => a.id.localeCompare(b.id));
     const full  = routines.filter(r => r.id.startsWith('full_')).sort((a, b) => a.id.localeCompare(b.id));
 
     const section = (title, list) => list.length
@@ -364,8 +385,14 @@ function buildInitialSession(routine, lastSession, seeds) {
 
       if (type === 'reps') {
         if (prev && prev.sets && prev.sets.length) {
+          // The seed can come from another routine's variant of this
+          // exercise (aliases): a bodyweight exercise must not inherit a
+          // hidden weight from a weighted variant, and a weighted one must
+          // keep the routine's weight/unit when the seed was bodyweight.
           sets = prev.sets.slice(0, setCount).map((s, i) => ({
-            weight: s.weight, unit: s.unit, reps: s.reps,
+            weight: ex.bodyweight ? null : (s.weight ?? ex.weight),
+            unit: s.unit ?? ex.unit,
+            reps: s.reps ?? ex.reps,
             warmup: !!s.warmup,
             restMinutes: i < setCount - 1 ? (s.restMinutes ?? 2) : null,
             done: false,
@@ -374,7 +401,8 @@ function buildInitialSession(routine, lastSession, seeds) {
             const last = sets[sets.length - 1];
             const i = sets.length;
             sets.push({
-              weight: last?.weight ?? ex.weight, unit: last?.unit ?? ex.unit, reps: last?.reps ?? ex.reps,
+              weight: ex.bodyweight ? null : (last?.weight ?? ex.weight),
+              unit: last?.unit ?? ex.unit, reps: last?.reps ?? ex.reps,
               warmup: false,
               restMinutes: i < setCount - 1 ? 2 : null,
               done: false,
@@ -491,10 +519,10 @@ async function renderSession(routineId, routeId = state.routeId) {
 
     const measureCell = (s, si) => {
       if (type === 'distance') {
-        return `<div class="input-suffix" data-suffix="m"><input type="text" inputmode="text" value="${escapeHtml(s.distance ?? '')}" placeholder="200m" data-ex="${idx}" data-set="${si}" data-field="distance" /></div>`;
+        return `<div class="input-suffix"><input type="text" inputmode="text" value="${escapeHtml(s.distance ?? '')}" placeholder="200m" data-ex="${idx}" data-set="${si}" data-field="distance" /></div>`;
       }
       if (type === 'duration') {
-        return `<div class="input-suffix" data-suffix="time"><input type="text" inputmode="text" value="${escapeHtml(s.duration ?? '')}" placeholder="30s" data-ex="${idx}" data-set="${si}" data-field="duration" /></div>`;
+        return `<div class="input-suffix"><input type="text" inputmode="text" value="${escapeHtml(s.duration ?? '')}" placeholder="30s" data-ex="${idx}" data-set="${si}" data-field="duration" /></div>`;
       }
       return `<div class="input-suffix" data-suffix="reps"><input type="number" inputmode="numeric" step="1" value="${escapeHtml(s.reps ?? '')}" data-ex="${idx}" data-set="${si}" data-field="reps" /></div>`;
     };
@@ -529,7 +557,7 @@ async function renderSession(routineId, routeId = state.routeId) {
     } else {
       target = isBW
         ? `${ex.target.reps} reps · BW`
-        : `${ex.target.reps} reps · ${ex.target.weight ?? '?'}${ex.target.unit || ''}`;
+        : `${ex.target.reps} reps · ${ex.target.weight != null ? `${ex.target.weight}${ex.target.unit || ''}` : '?'}`;
     }
 
     return `
@@ -642,7 +670,9 @@ async function saveCurrent(session) {
           const out = {};
           if (s.distance) out.distance = s.distance;
           if (s.duration) out.duration = s.duration;
-          if (s.weight != null) { out.weight = s.weight; out.unit = s.unit; }
+          // Bodyweight exercises have no weight input, so any weight on the
+          // set is a leftover (older drafts) — never log it.
+          if (s.weight != null && !ex.target?.bodyweight) { out.weight = s.weight; out.unit = s.unit; }
           if (s.reps != null) out.reps = s.reps;
           if (s.restMinutes != null) out.restMinutes = s.restMinutes;
           if (s.warmup) out.warmup = true;
@@ -678,7 +708,7 @@ async function saveCurrent(session) {
     setCachedHistory(payload.routineId, payload);
     state.lastSessions[payload.routineId] = payload;
     clearDraft(session.routineId);
-    toast('Offline — queued for sync', 'error');
+    toast(navigator.onLine ? 'Sync failed — queued, will retry' : 'Offline — queued for sync', 'error');
     location.hash = '#/';
   }
 }
@@ -691,15 +721,28 @@ async function flushPending() {
   if (list.length === 0 || !hasSyncConfig() || !navigator.onLine) return;
   flushing = true;
   try {
-    const remaining = [];
+    const synced = new Set();
     for (const s of list) {
-      try { await saveSession(s); }
-      catch (err) { remaining.push(s); }
+      try {
+        await saveSession(s);
+        synced.add(s);
+        // Drop it from the queue right away, re-reading the queue each time:
+        // a session queued by saveCurrent() while this loop was awaiting the
+        // network must survive (writing back a stale snapshot would erase
+        // it), and a crash mid-flush must not re-upload what already synced.
+        const key = JSON.stringify(s);
+        let removed = false;
+        setPending(getPending().filter(p => {
+          if (!removed && JSON.stringify(p) === key) { removed = true; return false; }
+          return true;
+        }));
+      } catch (err) {
+        console.warn('flushPending: still queued', s?.routineId, s?.date, err);
+      }
     }
-    setPending(remaining);
-    if (remaining.length < list.length) {
-      toast(`Synced ${list.length - remaining.length} session(s)`, 'ok');
-      if (location.hash === '#/' || location.hash === '') renderHome(state.routeId);
+    if (synced.size > 0) {
+      toast(`Synced ${synced.size} session(s)`, 'ok');
+      if (location.hash === '#/' || location.hash === '') route();
     }
   } finally {
     flushing = false;

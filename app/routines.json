@@ -705,23 +705,28 @@
       "exercises": [
         {
           "name": "Reverse-grip lat pulldown",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Cable seated row",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Chest-supported T-bar row",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Seated face pull",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell supinated curl",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -733,23 +738,28 @@
       "exercises": [
         {
           "name": "Lat pulldown",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell row",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Barbell bent over row",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Reverse pec deck",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "EZ bar curl",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         }
       ]
     },
@@ -761,23 +771,28 @@
       "exercises": [
         {
           "name": "Barbell bench press",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell incline press",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Cable flye",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Assisted dip",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell skull crusher",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -789,23 +804,28 @@
       "exercises": [
         {
           "name": "Barbell bench press",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Machine incline chest press",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Pec deck",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Assisted dip",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Cable tricep kickback",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         }
       ]
     },
@@ -817,31 +837,38 @@
       "exercises": [
         {
           "name": "Back squat",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Romanian deadlift",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Barbell hip thrust",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Leg extension",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Leg curl",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Standing calf raise",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Crunch",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -853,31 +880,38 @@
       "exercises": [
         {
           "name": "Deadlift",
-          "reps": 5
+          "reps": 5,
+          "unit": "lb"
         },
         {
           "name": "Goblet squat",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell single-leg hip thrust",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Leg press",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Lying leg curl",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Standing calf raise",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Bicycle crunch",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -889,27 +923,33 @@
       "exercises": [
         {
           "name": "Deadlift",
-          "reps": 5
+          "reps": 5,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell walking lunge",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Single-leg leg extension",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Single-leg lying leg curl",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Machine seated hip abduction",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Standing calf raise",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Plank",
@@ -926,31 +966,38 @@
       "exercises": [
         {
           "name": "Back squat",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Barbell hip thrust",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Romanian deadlift",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Seated leg curl",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Standing calf raise",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Hanging leg raise",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Machine seated hip abduction",
-          "reps": 20
+          "reps": 20,
+          "unit": "lb"
         }
       ]
     },
@@ -962,23 +1009,28 @@
       "exercises": [
         {
           "name": "Overhead press",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell lateral raise",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Cable reverse flye",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Single-arm rope tricep extension",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Single-arm cable curl",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -990,23 +1042,28 @@
       "exercises": [
         {
           "name": "Dumbbell seated shoulder press",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Cable lateral raise",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Bent over reverse dumbbell flye",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell floor press",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Hammer curl",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         }
       ]
     },
@@ -1018,31 +1075,38 @@
       "exercises": [
         {
           "name": "Back squat",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Barbell bench press",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Lat pulldown",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Romanian deadlift",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Assisted dip",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Standing calf raise",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell supinated curl",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         }
       ]
     },
@@ -1054,31 +1118,38 @@
       "exercises": [
         {
           "name": "Back squat",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell seated shoulder press",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Single-arm pulldown",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Barbell hip thrust",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Pec deck",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Reverse pec deck",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Cable lateral raise",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -1090,31 +1161,38 @@
       "exercises": [
         {
           "name": "Deadlift",
-          "reps": 5
+          "reps": 5,
+          "unit": "lb"
         },
         {
           "name": "Overhead press",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Chest-supported T-bar row",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Leg extension",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Cable flye",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Crunch",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell skull crusher",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -1126,31 +1204,38 @@
       "exercises": [
         {
           "name": "Deadlift",
-          "reps": 3
+          "reps": 3,
+          "unit": "lb"
         },
         {
           "name": "Close-grip bench press",
-          "reps": 5
+          "reps": 5,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell row",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell walking lunge",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Assisted dip",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Bicycle crunch",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Single-arm cable curl",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -1162,31 +1247,38 @@
       "exercises": [
         {
           "name": "Dumbbell walking lunge",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell incline press",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Reverse grip lat pulldown",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Barbell hip thrust",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Seated face pull",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell lateral raise",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Lying leg curl",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         }
       ]
     },
@@ -1198,31 +1290,38 @@
       "exercises": [
         {
           "name": "Back squat",
-          "reps": 5
+          "reps": 5,
+          "unit": "lb"
         },
         {
           "name": "Barbell bench press",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Neutral-grip pulldown",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Lying leg curl",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Seated face pull",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Single-arm rope tricep extension",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Standing calf raise",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         }
       ]
     },
@@ -1234,31 +1333,38 @@
       "exercises": [
         {
           "name": "Back squat",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Romanian deadlift",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Barbell hip thrust",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Leg extension",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Lying leg curl",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Machine seated hip abduction",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Crunch",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -1270,31 +1376,38 @@
       "exercises": [
         {
           "name": "Deadlift",
-          "reps": 5
+          "reps": 5,
+          "unit": "lb"
         },
         {
           "name": "Goblet squat",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell single-leg hip thrust",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Leg press",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Lying leg curl",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Standing calf raise",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Bicycle crunch",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -1306,27 +1419,33 @@
       "exercises": [
         {
           "name": "Deadlift",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell walking lunge",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Single-leg leg extension",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Single-leg lying leg curl",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Machine seated hip abduction",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Standing calf raise",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Plank",
@@ -1343,31 +1462,38 @@
       "exercises": [
         {
           "name": "Back squat",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Barbell hip thrust",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Romanian deadlift",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Seated leg curl",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Standing calf raise",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Hanging leg raise",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Machine seated hip abduction",
-          "reps": 20
+          "reps": 20,
+          "unit": "lb"
         }
       ]
     },
@@ -1379,31 +1505,38 @@
       "exercises": [
         {
           "name": "Barbell bench press",
-          "reps": 5
+          "reps": 5,
+          "unit": "lb"
         },
         {
           "name": "Lat pulldown",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Overhead press",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Chest-supported T-bar row",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Cable flye",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell supinated curl",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Single-arm rope tricep extension",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -1415,31 +1548,38 @@
       "exercises": [
         {
           "name": "Barbell bench press",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Single-arm pulldown",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell seated shoulder press",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell row",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Assisted dip",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Seated face pull",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "EZ bar curl",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         }
       ]
     },
@@ -1451,31 +1591,38 @@
       "exercises": [
         {
           "name": "Dumbbell incline press",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Reverse-grip lat pulldown",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Assisted dip",
-          "reps": 10
+          "reps": 10,
+          "unit": "lb"
         },
         {
           "name": "Barbell bent over row",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell lateral raise",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Seated face pull",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         },
         {
           "name": "Hammer curl",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         }
       ]
     },
@@ -1487,31 +1634,38 @@
       "exercises": [
         {
           "name": "Overhead press",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Neutral-grip pulldown",
-          "reps": 6
+          "reps": 6,
+          "unit": "lb"
         },
         {
           "name": "Dumbbell incline press",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Cable seated row",
-          "reps": 8
+          "reps": 8,
+          "unit": "lb"
         },
         {
           "name": "Cable lateral raise",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Reverse pec deck",
-          "reps": 12
+          "reps": 12,
+          "unit": "lb"
         },
         {
           "name": "Single-arm cable curl",
-          "reps": 15
+          "reps": 15,
+          "unit": "lb"
         }
       ]
     }

@@ -213,7 +213,8 @@ h2.section-title:first-child { margin-top: 4px; }
   text-align: center;
 }
 .set-label.warmup { color: var(--warn); }
-.set-row input[type="number"] {
+.set-row input[type="number"],
+.set-row input[type="text"] {
   background: var(--surface-2);
   border: 1px solid var(--border);
   color: var(--text);
@@ -230,7 +231,8 @@ h2.section-title:first-child { margin-top: 4px; }
   -webkit-appearance: none;
   margin: 0;
 }
-.set-row input[type="number"]:focus {
+.set-row input[type="number"]:focus,
+.set-row input[type="text"]:focus {
   outline: none;
   border-color: var(--accent);
 }
